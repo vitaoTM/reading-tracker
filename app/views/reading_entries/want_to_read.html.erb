@@ -1,0 +1,41 @@
+<div class="w-full">
+  <div class="mb-8 flex items-center justify-between">
+    <div>
+      <h1 class="h1">Want to Read</h1>
+      <p class="mt-2 text-lg text-gray-600">Books on your reading list.</p>
+    </div>
+    <%= link_to "Browse Books", books_path, class: "btn-secondary" %>
+  </div>
+
+  <div class="mb-8 card p-6 space-y-6">
+    <div>
+      <h3 class="text-base font-semibold text-gray-900 mb-3">Import from Amazon Wishlist</h3>
+      <%= form_with url: import_amazon_path, class: "flex gap-x-3" do |f| %>
+        <%= f.url_field :wishlist_url, placeholder: "https://www.amazon.com/hz/wishlist/ls/...", required: true, class: "form-input
+flex-1" %>
+        <%= f.submit "Import", class: "btn-primary" %>
+      <% end %>
+    </div>
+
+    <div class="border-t border-gray-200 pt-6">
+      <h3 class="text-base font-semibold text-gray-900 mb-3">Import from CSV</h3>
+      <%= form_with url: import_csv_path, multipart: true, class: "flex gap-x-3" do |f| %>
+        <%= f.file_field :csv_file, accept: ".csv", required: true, class: "form-input flex-1" %>
+        <%= f.submit "Upload", class: "btn-primary" %>
+      <% end %>
+    </div>
+  </div>
+
+  <% if @books.empty? %>
+    <p class="text-gray-500 text-sm">No books yet — add some above or browse the library.</p>
+  <% else %>
+    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      <% @books.each do |book| %>
+        <div class="card p-4">
+          <h3 class="font-bold text-slate-900"><%= link_to book.title, book_path(book) %></h3>
+          <p class="text-sm text-slate-600">by <%= book.author %></p>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+</div>
