@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :books
   resource :session
   resources :passwords, param: :token
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
@@ -15,4 +16,5 @@ Rails.application.routes.draw do
   root "sessions#new"
 
   resource :registration, only: [ :new, :create ]
+  resource :books
 end
