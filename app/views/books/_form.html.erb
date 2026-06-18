@@ -1,62 +1,77 @@
-<%= form_with(model: book, class: "contents") do |form| %>
+<%= form_with(model: book, class: "space-y-6") do |form| %>
   <% if book.errors.any? %>
-    <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-md mt-3">
-      <h2><%= pluralize(book.errors.count, "error") %> prohibited this book from being saved:</h2>
-
-      <ul class="list-disc ml-6">
-        <% book.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
+    <div class="rounded-md bg-red-50 p-4">
+      <div class="flex">
+        <div class="flex-shrink-0">
+          <svg class="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+          </svg>
+        </div>
+        <div class="ml-3">
+          <h3 class="text-sm font-medium text-red-800">
+            <%= pluralize(book.errors.count, "error") %> prohibited this book from being saved:
+          </h3>
+          <div class="mt-2 text-sm text-red-700">
+            <ul role="list" class="list-disc space-y-1 pl-5">
+              <% book.errors.full_messages.each do |msg| %>
+                <li><%= msg %></li>
+              <% end %>
+            </ul>
+          </div>
+        </div>
+      </div>
     </div>
   <% end %>
 
-  <div class="my-5">
-    <%= form.label :title %>
-    <%= form.text_field :title, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": book.errors[:title].none?, "border-red-400 focus:outline-red-600": book.errors[:title].any?}] %>
+  <div class="grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+    <div class="sm:col-span-4">
+      <%= form.label :title, class: "block text-sm font-medium leading-6 text-gray-900" %>
+      <%= form.text_field :title, class: "form-input mt-2" %>
+    </div>
+
+    <div class="sm:col-span-4">
+      <%= form.label :author, class: "block text-sm font-medium leading-6 text-gray-900" %>
+      <%= form.text_field :author, class: "form-input mt-2" %>
+    </div>
+
+    <div class="sm:col-span-3">
+      <%= form.label :isbn, "ISBN", class: "block text-sm font-medium leading-6 text-gray-900" %>
+      <%= form.text_field :isbn, class: "form-input mt-2" %>
+    </div>
+
+    <div class="sm:col-span-3">
+      <%= form.label :age_indicator, class: "block text-sm font-medium leading-6 text-gray-900" %>
+      <%= form.select :age_indicator, Book::AGE_INDICATOR.map { |a| [a.titleize, a] }, { include_blank: "Select age indicator" }, class: "form-input mt-2" %>
+    </div>
+
+    <div class="col-span-full">
+      <%= form.label :description, class: "block text-sm font-medium leading-6 text-gray-900" %>
+      <%= form.text_area :description, rows: 4, class: "form-input mt-2" %>
+    </div>
+
+    <div class="sm:col-span-2">
+      <%= form.label :published_year, class: "block text-sm font-medium leading-6 text-gray-900" %>
+      <%= form.number_field :published_year, class: "form-input mt-2" %>
+    </div>
+
+    <div class="sm:col-span-2">
+      <%= form.label :language, class: "block text-sm font-medium leading-6 text-gray-900" %>
+      <%= form.text_field :language, class: "form-input mt-2" %>
+    </div>
+
+    <div class="sm:col-span-2">
+      <%= form.label :page_count, class: "block text-sm font-medium leading-6 text-gray-900" %>
+      <%= form.number_field :page_count, class: "form-input mt-2" %>
+    </div>
+
+    <div class="sm:col-span-3">
+      <%= form.label :country_of_origin, class: "block text-sm font-medium leading-6 text-gray-900" %>
+      <%= form.text_field :country_of_origin, class: "form-input mt-2" %>
+    </div>
   </div>
 
-  <div class="my-5">
-    <%= form.label :author %>
-    <%= form.text_field :author, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": book.errors[:author].none?, "border-red-400 focus:outline-red-600": book.errors[:author].any?}] %>
-  </div>
-
-  <div class="my-5">
-    <%= form.label :isbn %>
-    <%= form.text_field :isbn, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": book.errors[:isbn].none?, "border-red-400 focus:outline-red-600": book.errors[:isbn].any?}] %>
-  </div>
-
-  <div class="my-5">
-    <%= form.label :description %>
-    <%= form.textarea :description, rows: 4, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": book.errors[:description].none?, "border-red-400 focus:outline-red-600": book.errors[:description].any?}] %>
-  </div>
-
-  <div class="my-5">
-    <%= form.label :published_year %>
-    <%= form.number_field :published_year, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": book.errors[:published_year].none?, "border-red-400 focus:outline-red-600": book.errors[:published_year].any?}] %>
-  </div>
-
-  <div class="my-5">
-    <%= form.label :country_of_origin %>
-    <%= form.text_field :country_of_origin, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": book.errors[:country_of_origin].none?, "border-red-400 focus:outline-red-600": book.errors[:country_of_origin].any?}] %>
-  </div>
-
-  <div class="my-5">
-    <%= form.label :language %>
-    <%= form.text_field :language, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": book.errors[:language].none?, "border-red-400 focus:outline-red-600": book.errors[:language].any?}] %>
-  </div>
-
-  <div class="my-5">
-    <%= form.label :page_count %>
-    <%= form.number_field :page_count, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": book.errors[:page_count].none?, "border-red-400 focus:outline-red-600": book.errors[:page_count].any?}] %>
-  </div>
-
-  <div class="my-5">
-    <%= form.label :age_indicator %>
-    <%= form.text_field :age_indicator, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": book.errors[:age_indicator].none?, "border-red-400 focus:outline-red-600": book.errors[:age_indicator].any?}] %>
-  </div>
-
-  <div class="inline">
-    <%= form.submit class: "w-full sm:w-auto rounded-md px-3.5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white inline-block font-medium cursor-pointer" %>
+  <div class="pt-6 flex items-center justify-end gap-x-3">
+    <%= link_to "Cancel", books_path, class: "btn-secondary" %>
+    <%= form.submit class: "btn-primary" %>
   </div>
 <% end %>

@@ -1,38 +1,35 @@
-<div id="<%= dom_id book %>" class="w-full sm:w-auto my-5 space-y-5">
-  <div>
-    <strong class="block font-medium mb-1">Title:</strong>
-    <%= book.title %>
+<div id="<%= dom_id book %>">
+  <div class="flex items-center justify-between mb-2">
+    <h2 class="text-xl font-bold text-slate-900 truncate"><%= book.title %></h2>
+    <span class="inline-flex items-center rounded-full bg-indigo-50 px-2 py-1 text-xs font-medium text-indigo-700 ring-1 ring-inset ring-indigo-700/10">
+      <%= book.age_indicator&.titleize || "All Ages" %>
+    </span>
   </div>
-  <div>
-    <strong class="block font-medium mb-1">Author:</strong>
-    <%= book.author %>
+  
+  <p class="text-sm font-medium text-slate-600 mb-4">by <%= book.author %></p>
+  
+  <div class="space-y-2 text-sm text-slate-500">
+    <div class="flex justify-between">
+      <span class="font-semibold">ISBN:</span>
+      <span><%= book.isbn.presence || "N/A" %></span>
+    </div>
+    <div class="flex justify-between">
+      <span class="font-semibold">Published:</span>
+      <span><%= book.published_year %></span>
+    </div>
+    <div class="flex justify-between">
+      <span class="font-semibold">Language:</span>
+      <span><%= book.language %></span>
+    </div>
+    <div class="flex justify-between">
+      <span class="font-semibold">Pages:</span>
+      <span><%= book.page_count %></span>
+    </div>
   </div>
-  <div>
-    <strong class="block font-medium mb-1">Isbn:</strong>
-    <%= book.isbn %>
-  </div>
-  <div>
-    <strong class="block font-medium mb-1">Description:</strong>
-    <%= book.description %>
-  </div>
-  <div>
-    <strong class="block font-medium mb-1">Published year:</strong>
-    <%= book.published_year %>
-  </div>
-  <div>
-    <strong class="block font-medium mb-1">Country of origin:</strong>
-    <%= book.country_of_origin %>
-  </div>
-  <div>
-    <strong class="block font-medium mb-1">Language:</strong>
-    <%= book.language %>
-  </div>
-  <div>
-    <strong class="block font-medium mb-1">Page count:</strong>
-    <%= book.page_count %>
-  </div>
-  <div>
-    <strong class="block font-medium mb-1">Age indicator:</strong>
-    <%= book.age_indicator %>
-  </div>
+
+  <% if book.description.present? %>
+    <div class="mt-4 pt-4 border-t border-slate-100">
+      <p class="text-sm text-slate-600 line-clamp-3"><%= book.description %></p>
+    </div>
+  <% end %>
 </div>

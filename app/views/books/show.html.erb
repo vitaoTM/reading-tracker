@@ -1,15 +1,66 @@
-<% content_for :title, "Showing book" %>
+<% content_for :title, @book.title %>
 
-<div class="md:w-2/3 w-full">
-  <% if notice.present? %>
-    <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-md inline-block" id="notice"><%= notice %></p>
-  <% end %>
+<div class="w-full max-w-3xl">
+  <div class="mb-8 flex items-center justify-between">
+    <h1 class="h1"><%= @book.title %></h1>
+    <div class="flex gap-x-3">
+      <%= link_to "Edit", edit_book_path(@book), class: "btn-secondary" %>
+      <%= link_to "Back to books", books_path, class: "btn-secondary" %>
+    </div>
+  </div>
 
-  <h1 class="font-bold text-4xl">Showing book</h1>
+  <div class="card">
+    <div class="grid grid-cols-1 gap-x-8 gap-y-10 border-b border-gray-900/10 pb-12 md:grid-cols-3">
+      <div>
+        <h2 class="text-base font-semibold leading-7 text-gray-900">Book Details</h2>
+        <p class="mt-1 text-sm leading-6 text-gray-600">Basic information about the book.</p>
+      </div>
 
-  <%= render @book %>
+      <div class="md:col-span-2">
+        <dl class="grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-2">
+          <div class="border-t border-gray-100 pt-4">
+            <dt class="text-sm font-medium leading-6 text-gray-900">Author</dt>
+            <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0"><%= @book.author %></dd>
+          </div>
+          <div class="border-t border-gray-100 pt-4">
+            <dt class="text-sm font-medium leading-6 text-gray-900">ISBN</dt>
+            <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0"><%= @book.isbn.presence || "N/A" %></dd>
+          </div>
+          <div class="border-t border-gray-100 pt-4">
+            <dt class="text-sm font-medium leading-6 text-gray-900">Published Year</dt>
+            <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0"><%= @book.published_year %></dd>
+          </div>
+          <div class="border-t border-gray-100 pt-4">
+            <dt class="text-sm font-medium leading-6 text-gray-900">Age Indicator</dt>
+            <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0"><%= @book.age_indicator&.titleize || "All Ages" %></dd>
+          </div>
+          <div class="border-t border-gray-100 pt-4">
+            <dt class="text-sm font-medium leading-6 text-gray-900">Language</dt>
+            <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0"><%= @book.language %></dd>
+          </div>
+          <div class="border-t border-gray-100 pt-4">
+            <dt class="text-sm font-medium leading-6 text-gray-900">Page Count</dt>
+            <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0"><%= @book.page_count %></dd>
+          </div>
+          <div class="border-t border-gray-100 pt-4 sm:col-span-2">
+            <dt class="text-sm font-medium leading-6 text-gray-900">Country of Origin</dt>
+            <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0"><%= @book.country_of_origin %></dd>
+          </div>
+        </dl>
+      </div>
+    </div>
 
-  <%= link_to "Edit this book", edit_book_path(@book), class: "w-full sm:w-auto text-center rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
-  <%= link_to "Back to books", books_path, class: "w-full sm:w-auto text-center mt-2 sm:mt-0 sm:ml-2 rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
-  <%= button_to "Destroy this book", @book, method: :delete, form_class: "sm:inline-block mt-2 sm:mt-0 sm:ml-2", class: "w-full rounded-md px-3.5 py-2.5 text-white bg-red-600 hover:bg-red-500 font-medium cursor-pointer", data: { turbo_confirm: "Are you sure?" } %>
+    <% if @book.description.present? %>
+      <div class="mt-10">
+        <h2 class="text-base font-semibold leading-7 text-gray-900">Description</h2>
+        <div class="mt-4 text-sm leading-6 text-gray-700 prose prose-slate max-w-none">
+          <%= simple_format @book.description %>
+        </div>
+      </div>
+    <% end %>
+
+    <div class="mt-10 pt-6 border-t border-gray-900/10 flex justify-end">
+      <%= button_to "Destroy this book", @book, method: :delete, class: "btn-danger", data: { turbo_confirm: "Are you sure?" } %>
+    </div>
+  </div>
 </div>
