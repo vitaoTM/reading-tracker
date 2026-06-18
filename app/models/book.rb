@@ -6,4 +6,18 @@ class Book < ApplicationRecord
   validates :title, presence: true
   validates :isbn, uniqueness: true, allow_blank: true
   validates :age_indicator, inclusion: { in: AGE_INDICATOR }, allow_nil: true
+
+  has_many :book_tags, dependent: :destroy
+  has_many :tags, through: :book_tags
+  has_many :reading_entries, dependent: :destroy
+
+  def tag_names=(names)
+    self.tags = Array(names).reject(&:blank?).map do |name|
+      Tag.find_or_create_by(name: name.downcase.strip)
+    end
+  end
+
+  def tag_names
+    tags.pluck(:name)
+  end
 end

@@ -1,0 +1,32 @@
+<div class="mt-6">
+  <div class="card p-6">
+    <h3 class="text-base font-semibold leading-6 text-gray-900">My Library Status</h3>
+    <% if @reading_entry %>
+      <div class="mt-4 flex items-center justify-between gap-x-4">
+        <span class="text-sm text-gray-600">This book is in your library as: <strong><%= @reading_entry.status.humanize %></strong></span>
+        <div class="flex items-center gap-x-2">
+          <%= form_with url: reading_entry_path(@reading_entry), 
+                        method: :patch, 
+                        scope: :reading_entry,
+                        class: "flex items-center gap-x-2" do |f| %>
+            <%= f.select :status, ReadingEntry.statuses.keys.map { |s| [ s.humanize, s ] }, { selected: @reading_entry.status }, { class: "form-input", onchange: "this.form.submit()" } %>
+          <% end %>
+          <%= button_to "Remove", reading_entry_path(@reading_entry), method: :delete, class: "btn-danger", data: { turbo_confirm: "Are you sure you want to remove this book from your library?" } %>
+        </div>
+      </div>
+    <% else %>
+      <div class="mt-4">
+        <%= form_with url: reading_entries_path, 
+                      scope: :reading_entry,
+                      class: "flex items-center justify-between gap-x-4" do |f| %>
+          <p class="text-sm text-gray-600">Add this book to your library:</p>
+          <div class="flex items-center gap-x-2">
+            <%= f.hidden_field :book_id, value: @book.id %>
+            <%= f.select :status, ReadingEntry.statuses.keys.map { |s| [ s.humanize, s ] }, {}, { class: "form-input" } %>
+            <%= f.submit "Add", class: "btn-primary" %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>

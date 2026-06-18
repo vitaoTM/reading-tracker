@@ -10,9 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_06_18_012749) do
+ActiveRecord::Schema[8.1].define(version: 2026_06_18_161905) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
+
+  create_table "book_tags", force: :cascade do |t|
+    t.bigint "book_id", null: false
+    t.datetime "created_at", null: false
+    t.bigint "tag_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["book_id", "tag_id"], name: "index_book_tags_on_book_id_and_tag_id", unique: true
+    t.index ["book_id"], name: "index_book_tags_on_book_id"
+    t.index ["tag_id"], name: "index_book_tags_on_tag_id"
+  end
 
   create_table "books", force: :cascade do |t|
     t.string "age_indicator"
@@ -30,6 +40,22 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_18_012749) do
     t.index ["isbn"], name: "index_books_on_isbn", unique: true
   end
 
+  create_table "reading_entries", force: :cascade do |t|
+    t.bigint "book_id", null: false
+    t.text "citation"
+    t.datetime "created_at", null: false
+    t.text "discovery_source"
+    t.date "finished_at"
+    t.text "notes"
+    t.date "started_at"
+    t.integer "status"
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["book_id"], name: "index_reading_entries_on_book_id"
+    t.index ["user_id", "book_id"], name: "index_reading_entries_on_user_id_and_book_id", unique: true
+    t.index ["user_id"], name: "index_reading_entries_on_user_id"
+  end
+
   create_table "sessions", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "ip_address"
@@ -37,6 +63,13 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_18_012749) do
     t.string "user_agent"
     t.bigint "user_id", null: false
     t.index ["user_id"], name: "index_sessions_on_user_id"
+  end
+
+  create_table "tags", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "name"
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_tags_on_name", unique: true
   end
 
   create_table "users", force: :cascade do |t|
@@ -50,5 +83,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_18_012749) do
     t.index ["username"], name: "index_users_on_username", unique: true
   end
 
+  add_foreign_key "book_tags", "books"
+  add_foreign_key "book_tags", "tags"
+  add_foreign_key "reading_entries", "books"
+  add_foreign_key "reading_entries", "users"
   add_foreign_key "sessions", "users"
 end
