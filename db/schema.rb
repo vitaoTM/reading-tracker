@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_06_19_152810) do
+ActiveRecord::Schema[8.1].define(version: 2026_06_19_171130) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -40,6 +40,17 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_19_152810) do
     t.string "title"
     t.datetime "updated_at", null: false
     t.index ["isbn"], name: "index_books_on_isbn", unique: true
+  end
+
+  create_table "favorite_books", force: :cascade do |t|
+    t.bigint "book_id", null: false
+    t.datetime "created_at", null: false
+    t.integer "position"
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["book_id", "user_id"], name: "index_favorite_books_on_book_id_and_user_id", unique: true
+    t.index ["book_id"], name: "index_favorite_books_on_book_id"
+    t.index ["user_id"], name: "index_favorite_books_on_user_id"
   end
 
   create_table "loans", force: :cascade do |t|
@@ -127,6 +138,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_19_152810) do
 
   add_foreign_key "book_tags", "books"
   add_foreign_key "book_tags", "tags"
+  add_foreign_key "favorite_books", "books"
+  add_foreign_key "favorite_books", "users"
   add_foreign_key "loans", "books"
   add_foreign_key "loans", "users"
   add_foreign_key "ratings", "books"

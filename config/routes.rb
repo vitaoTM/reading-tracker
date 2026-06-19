@@ -14,6 +14,9 @@ Rails.application.routes.draw do
 
   get "habits", to: "reading_sessions#index"
   resources :reading_sessions, only: [ :create, :destroy ]
+  resources :favorite_books, only: [ :create, :destroy ] do
+    collection { patch :reorder }
+  end
   resources :loans
   root "sessions#new"
 end
