@@ -1,0 +1,56 @@
+<h1>Loans</h1>
+
+<%= link_to "Record a loan", new_loan_path %>
+
+<h2>Lent</h2>
+
+<% if @lent.empty? %>
+  <p>Nothing lent out</p>
+<% else %>
+  <% @lent.each do |loan| %>
+    <div>
+      <strong><%= loan.display_title() %></strong> → <%= loan.counterparty_name %>
+      (<%= loan.loaned_on.strftime("%b %d, %Y") %>)
+      <%= button_to "Mark returned", loan_path(loan),
+                    method: :patch,
+                    params: { loan: { returned_on: Date.current } } %>
+      <%= button_to "Delete", loan_path(loan),
+                    method: :delete,
+                    data: { turbo_confirm: "Delete this loan?" } %>
+    </div>
+  <% end %>
+<% end %>
+
+<h2>Borrowed</h2>
+
+<% if @borrowed.empty? %>
+  <p>Nothing Borrowed.</p>
+<% else %>
+  <% @borrowed.each do |loan| %>
+    <div>
+      <strong><%= loan.display_title %></strong> ← <%= loan.counterparty_name %>
+      (<%= loan.loaned_on.strftime("%b %d, %Y") %>)
+      <%= button_to "Mark returned", loan_path(loan),
+                    method: :patch,
+                    params: { loan: { returned_on: Date.current } } %>
+      <%= button_to "delete", loan_path(loan),
+                    method: :delete,
+                    data: { turbo_confirm: "Delete this loan?" } %>
+    </div>
+  <% end %>
+<% end %>
+
+<h2>History</h2>
+
+<% if @history.empty? %>
+  <p>No returned loans yet.</p>
+<% else %>
+  <% @history.each do |loan| %>
+    <div>
+      <strong><%= loan.display_title %></strong>
+      <%= loan.lent? ? "lent to" : "borrowed from" %> <%= loan.counterparty_name %>
+      — returned <%= loan.returned_on.strftime("%b %d, %Y") %>
+      <%= button_to "Delete", loan_path(loan), method: :delete, data: { turbo_confirm: "Delete this loan?" } %>
+    </div>
+  <% end %>
+<% end %>

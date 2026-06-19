@@ -1,9 +1,4 @@
 Rails.application.routes.draw do
-  # get "reading_entries/index"
-  # get "reading_entries/create"
-  # get "reading_entries/update"
-  # get "reading_entries/destroy"
-
   resource :session
   resources :passwords, param: :token
   resource :registration, only: [ :new, :create ]
@@ -15,5 +10,8 @@ Rails.application.routes.draw do
   post "want_to_read/import_amazon", to: "reading_entries#import_amazon", as: :import_amazon
   post "want_to_read/import_csv", to: "reading_entries#import_csv", as: :import_csv
 
+  get "habits", to: "reading_sessions#index"
+  resources :reading_sessions, only: [ :create, :destroy ]
+  resources :loans
   root "sessions#new"
 end

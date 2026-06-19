@@ -1,0 +1,40 @@
+<%= form_with model: loan do |f| %>
+  <% if loan.errors.any? %>
+    <div>
+      <% loan.errors.full_messages.each do |msg| %>
+        <p><%= msg %></p>
+      <% end %>
+    </div>
+  <% end %>
+
+  <div>
+    <%= f.collection_radio_buttons :direction, Loan.directions.keys, :to_s, :humanize %>
+  </div>
+
+  <div>
+    <%= f.label :counterparty_name, "Who?" %>
+    <%= f.text_field :counterparty_name, placeholder: "Name", required: true %>
+  </div>
+
+  <div>
+    <%= f.label :loaned_on, "Date" %>
+    <%= f.text_field :loaned_on, value: (loan.loaned_on || Date.current) %>
+  </div>
+
+  <div>
+    <%= f.label :book_id, "Book from your library" %>
+    <%= f.collection_select :book_id, Current.user.books, :id, :title, { include_blank: "- or type a title below -"} %>
+  </div>
+
+  <div>
+    <%= f.label :book_title, "Book title (if not in your library)" %>
+    <%= f.text_field :book_title, placeholder: "Book title" %>
+  </div>
+
+  <div>
+    <%= f.label :notes %>
+    <%= f.text_area :notes %>
+  </div>
+
+  <%= f.submit %>
+<% end %>
