@@ -1,90 +1,161 @@
-<div class="w-full">
+<div class="w-full max-w-5xl mx-auto">
   <div class="mb-8">
     <h1 class="h1">Reading Habits</h1>
-    <p class="mt-2 text-lg text-gray-600">Track your reading sessions and streaks.</p>
+    <p class="mt-2 text-lg text-slate-600">Reflect on your metrics, log daily reading progress, and build consistent habits.</p>
   </div>
 
-  <%# Stats %>
+  <%# Stats Panel %>
   <div class="grid grid-cols-2 gap-6 sm:grid-cols-4 mb-8">
-    <div class="card p-6 text-center">
-      <p class="text-3xl font-bold text-indigo-600"><%= @stats[:current_streak] %></p>
-      <p class="text-sm text-gray-600 mt-1">Day streak</p>
+    <div class="card p-6 flex flex-col items-center justify-center text-center hover:shadow-md transition">
+      <div class="w-10 h-10 rounded-full bg-amber-50 flex items-center justify-center text-amber-500 mb-3">
+        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clip-rule="evenodd" />
+        </svg>
+      </div>
+      <p class="text-3xl font-extrabold text-slate-900"><%= @stats[:current_streak] %></p>
+      <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider mt-1">Day Streak</p>
     </div>
-    <div class="card p-6 text-center">
-      <p class="text-3xl font-bold text-indigo-600"><%= @stats[:total_pages] %></p>
-      <p class="text-sm text-gray-600 mt-1">Pages (30d)</p>
+
+    <div class="card p-6 flex flex-col items-center justify-center text-center hover:shadow-md transition">
+      <div class="w-10 h-10 rounded-full bg-indigo-50 flex items-center justify-center text-indigo-500 mb-3">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+        </svg>
+      </div>
+      <p class="text-3xl font-extrabold text-slate-900"><%= @stats[:total_pages] %></p>
+      <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider mt-1">Pages (30d)</p>
     </div>
-    <div class="card p-6 text-center">
-      <p class="text-3xl font-bold text-indigo-600"><%= @stats[:total_minutes] %></p>
-      <p class="text-sm text-gray-600 mt-1">Minutes (30d)</p>
+
+    <div class="card p-6 flex flex-col items-center justify-center text-center hover:shadow-md transition">
+      <div class="w-10 h-10 rounded-full bg-sky-50 flex items-center justify-center text-sky-500 mb-3">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+      </div>
+      <p class="text-3xl font-extrabold text-slate-900"><%= @stats[:total_minutes] %></p>
+      <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider mt-1">Minutes (30d)</p>
     </div>
-    <div class="card p-6 text-center">
-      <p class="text-3xl font-bold text-indigo-600"><%= @stats[:days_active] %></p>
-      <p class="text-sm text-gray-600 mt-1">Days active (30d)</p>
+
+    <div class="card p-6 flex flex-col items-center justify-center text-center hover:shadow-md transition">
+      <div class="w-10 h-10 rounded-full bg-emerald-50 flex items-center justify-center text-emerald-500 mb-3">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+      </div>
+      <p class="text-3xl font-extrabold text-slate-900"><%= @stats[:days_active] %></p>
+      <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider mt-1">Active Days</p>
     </div>
   </div>
 
-  <%# Heatmap %>
+  <%# Heatmap Panel %>
   <div class="card p-6 mb-8">
-    <h2 class="text-base font-semibold text-gray-900 mb-4">Last 90 days</h2>
-    <div class="flex flex-wrap gap-1">
+    <div class="flex items-center justify-between mb-4">
+      <h2 class="text-base font-bold text-slate-900">Recent Reading Activity (Last 90 Days)</h2>
+      <div class="flex items-center gap-2 text-xs text-slate-500">
+        <span>Less</span>
+        <div class="w-2.5 h-2.5 bg-gray-100 rounded-sm"></div>
+        <div class="w-2.5 h-2.5 bg-indigo-200 rounded-sm"></div>
+        <div class="w-2.5 h-2.5 bg-indigo-400 rounded-sm"></div>
+        <div class="w-2.5 h-2.5 bg-indigo-600 rounded-sm"></div>
+        <span>More</span>
+      </div>
+    </div>
+    
+    <div class="flex flex-wrap gap-1 p-2 rounded-xl bg-slate-50 border border-slate-100/50 justify-center sm:justify-start">
       <% (90.days.ago.to_date..Date.current).each do |date| %>
         <% minutes = @heatmap[date] || 0 %>
-        <% intensity = case minutes when 0 then "bg-gray-100" when 1..20 then "bg-indigo-200" when 21..45 then "bg-indigo-400" else
-"bg-indigo-600" end %>
-        <div class="w-3 h-3 rounded-sm <%= intensity %>" title="<%= date.strftime('%b %d') %>: <%= minutes %> min"></div>
+        <% intensity = case minutes when 0 then "bg-white hover:bg-slate-100 border border-slate-100" when 1..20 then "bg-indigo-100 hover:bg-indigo-200" when 21..45 then "bg-indigo-300 hover:bg-indigo-400" else "bg-indigo-600 hover:bg-indigo-700" end %>
+        <div class="w-3.5 h-3.5 rounded-sm <%= intensity %> transition cursor-help relative group" title="<%= date.strftime('%b %d') %>: <%= minutes %> min">
+          <%# Tooltip %>
+          <span class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-1 hidden group-hover:block z-10 bg-slate-800 text-white text-[10px] rounded px-1.5 py-0.5 whitespace-nowrap pointer-events-none">
+            <%= date.strftime('%b %d') %>: <%= minutes %> min
+          </span>
+        </div>
       <% end %>
     </div>
   </div>
 
-  <%# Log session form %>
+  <%# Log Session Form %>
   <div class="card p-6 mb-8">
-    <h2 class="text-base font-semibold text-gray-900 mb-4">Log a session</h2>
-    <%= form_with url: reading_sessions_path, scope: :reading_session, class: "grid grid-cols-2 gap-4 sm:grid-cols-4" do |f| %>
+    <h2 class="text-base font-bold text-slate-900 mb-4">Log a Reading Session</h2>
+    <%= form_with url: reading_sessions_path, scope: :reading_session, class: "grid grid-cols-1 sm:grid-cols-4 gap-4" do |f| %>
       <div>
-        <%= f.label :read_on, "Date", class: "label" %>
+        <%= f.label :read_on, "Date", class: "block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1" %>
         <%= f.date_field :read_on, value: Date.current, class: "form-input w-full" %>
       </div>
       <div>
-        <%= f.label :duration_minutes, "Minutes", class: "label" %>
-        <%= f.number_field :duration_minutes, min: 1, class: "form-input w-full" %>
+        <%= f.label :duration_minutes, "Time (Minutes)", class: "block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1" %>
+        <%= f.number_field :duration_minutes, min: 1, placeholder: "e.g., 30", class: "form-input w-full" %>
       </div>
       <div>
-        <%= f.label :pages_read, "Pages", class: "label" %>
-        <%= f.number_field :pages_read, min: 0, class: "form-input w-full" %>
+        <%= f.label :pages_read, "Pages Read", class: "block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1" %>
+        <%= f.number_field :pages_read, min: 0, placeholder: "e.g., 20", class: "form-input w-full" %>
       </div>
       <div>
-        <%= f.label :book_id, "Book", class: "label" %>
-        <%= f.collection_select :book_id, Current.user.books, :id, :title, { include_blank: "— optional —" }, { class: "form-input
-w-full" } %>
+        <%= f.label :book_id, "Book Associated", class: "block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1" %>
+        <%= f.collection_select :book_id, Current.user.books, :id, :title, { include_blank: "— General Reading —" }, { class: "form-input w-full" } %>
       </div>
-      <div class="col-span-2 sm:col-span-4">
-        <%= f.submit "Log session", class: "btn-primary" %>
+      <div class="sm:col-span-4 flex justify-end mt-2">
+        <%= f.submit "Log Session", class: "btn-primary shadow-indigo-100 px-6 font-semibold cursor-pointer" %>
       </div>
     <% end %>
   </div>
 
-  <%# Recent sessions %>
+  <%# Recent Sessions List %>
   <div class="card p-6">
-    <h2 class="text-base font-semibold text-gray-900 mb-4">Recent sessions</h2>
+    <h2 class="text-base font-bold text-slate-900 mb-4">Recent Sessions</h2>
     <% if @recent.empty? %>
-      <p class="text-sm text-gray-500">No sessions logged yet.</p>
+      <div class="text-center py-8">
+        <p class="text-slate-500 text-sm">No reading sessions recorded yet. Start logging above!</p>
+      </div>
     <% else %>
-      <ul class="divide-y divide-gray-100">
-        <% @recent.each do |session| %>
-          <li class="flex items-center justify-between py-3">
-            <div>
-              <p class="text-sm font-medium text-gray-900"><%= session.read_on.strftime("%b %d, %Y") %></p>
-              <p class="text-xs text-gray-500">
-                <%= [ ("#{session.duration_minutes} min" if session.duration_minutes), ("#{session.pages_read} pages" if
-session.pages_read) ].compact.join(" · ") %>
-                <% if session.book %>· <%= session.book.title %><% end %>
-              </p>
-            </div>
-            <%= button_to "Remove", reading_session_path(session), method: :delete, class: "text-xs text-red-500 hover:text-red-700" %>
-          </li>
-        <% end %>
-      </ul>
+      <div class="flow-root">
+        <ul class="-my-5 divide-y divide-slate-100">
+          <% @recent.each do |session| %>
+            <li class="py-4 flex items-center justify-between">
+              <div class="min-w-0 flex-1">
+                <div class="flex items-center gap-2">
+                  <p class="text-sm font-semibold text-slate-900"><%= session.read_on.strftime("%A, %b %d, %Y") %></p>
+                  <% if session.book %>
+                    <span class="inline-flex items-center rounded-md bg-indigo-50 px-2 py-0.5 text-xs font-medium text-indigo-700 ring-1 ring-inset ring-indigo-600/10 truncate max-w-[200px]">
+                      <%= session.book.title %>
+                    </span>
+                  <% end %>
+                </div>
+                <div class="flex items-center gap-4 text-xs text-slate-500 mt-1">
+                  <% if session.duration_minutes %>
+                    <span class="flex items-center gap-1">
+                      <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                      <%= session.duration_minutes %> min
+                    </span>
+                  <% end %>
+                  <% if session.pages_read %>
+                    <span class="flex items-center gap-1">
+                      <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                      </svg>
+                      <%= session.pages_read %> pages
+                    </span>
+                  <% end %>
+                </div>
+                <% if session.notes.present? %>
+                  <p class="text-xs text-slate-400 italic mt-1 bg-slate-50 p-2 rounded-lg border border-slate-100 max-w-2xl"><%= session.notes %></p>
+                <% end %>
+              </div>
+              <div>
+                <%= button_to reading_session_path(session),
+                              method: :delete,
+                              class: "text-xs font-semibold text-slate-400 hover:text-red-600 hover:bg-red-50 px-2.5 py-1.5 rounded-lg border border-transparent hover:border-red-100 transition cursor-pointer",
+                              data: { turbo_confirm: "Delete this reading session?" } do %>
+                  Remove
+                <% end %>
+              </div>
+            </li>
+          <% end %>
+        </ul>
+      </div>
     <% end %>
   </div>
 </div>

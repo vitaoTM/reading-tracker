@@ -1,40 +1,65 @@
-<%= form_with model: loan do |f| %>
+<%= form_with model: loan, class: "space-y-6" do |f| %>
   <% if loan.errors.any? %>
-    <div>
-      <% loan.errors.full_messages.each do |msg| %>
-        <p><%= msg %></p>
-      <% end %>
+    <div class="rounded-lg bg-red-50 p-4 border border-red-200">
+      <div class="flex">
+        <div class="flex-shrink-0">
+          <svg class="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+          </svg>
+        </div>
+        <div class="ml-3">
+          <h3 class="text-sm font-semibold text-red-800">
+            <%= pluralize(loan.errors.count, "error") %> prohibited this loan from being saved:
+          </h3>
+          <ul class="mt-2 text-sm text-red-700 list-disc list-inside space-y-1">
+            <% loan.errors.full_messages.each do |msg| %>
+              <li><%= msg %></li>
+            <% end %>
+          </ul>
+        </div>
+      </div>
     </div>
   <% end %>
 
   <div>
-    <%= f.collection_radio_buttons :direction, Loan.directions.keys, :to_s, :humanize %>
+    <%= f.label :direction, "Loan Direction", class: "block text-sm font-semibold text-slate-700 mb-2" %>
+    <div class="flex gap-4">
+      <%= f.collection_radio_buttons :direction, Loan.directions.keys, :to_s, :humanize do |b| %>
+        <label class="flex-1 flex items-center justify-center gap-2 cursor-pointer bg-slate-50 border border-slate-200 hover:bg-slate-100 rounded-lg p-3 transition duration-150 [&:has(input:checked)]:border-indigo-600 [&:has(input:checked)]:bg-indigo-50/50 [&:has(input:checked)]:text-indigo-700">
+          <%= b.radio_button(class: "h-4 w-4 text-indigo-600 border-slate-300 focus:ring-indigo-600 cursor-pointer") %>
+          <span class="text-sm font-medium"><%= b.text %></span>
+        </label>
+      <% end %>
+    </div>
   </div>
 
   <div>
-    <%= f.label :counterparty_name, "Who?" %>
-    <%= f.text_field :counterparty_name, placeholder: "Name", required: true %>
+    <%= f.label :counterparty_name, "Who is the other party?", class: "block text-sm font-semibold text-slate-700 mb-1" %>
+    <%= f.text_field :counterparty_name, placeholder: "e.g., Jane Doe", required: true, class: "form-input mt-1" %>
   </div>
 
   <div>
-    <%= f.label :loaned_on, "Date" %>
-    <%= f.text_field :loaned_on, value: (loan.loaned_on || Date.current) %>
+    <%= f.label :loaned_on, "Date Loaned", class: "block text-sm font-semibold text-slate-700 mb-1" %>
+    <%= f.date_field :loaned_on, value: (loan.loaned_on || Date.current), class: "form-input mt-1" %>
   </div>
 
   <div>
-    <%= f.label :book_id, "Book from your library" %>
-    <%= f.collection_select :book_id, Current.user.books, :id, :title, { include_blank: "- or type a title below -"} %>
+    <%= f.label :book_id, "Select a book from your library", class: "block text-sm font-semibold text-slate-700 mb-1" %>
+    <%= f.collection_select :book_id, Current.user.books, :id, :title, { include_blank: "- or enter a title below -" }, { class: "form-input mt-1" } %>
   </div>
 
   <div>
-    <%= f.label :book_title, "Book title (if not in your library)" %>
-    <%= f.text_field :book_title, placeholder: "Book title" %>
+    <%= f.label :book_title, "Or type the book title (if not in library)", class: "block text-sm font-semibold text-slate-700 mb-1" %>
+    <%= f.text_field :book_title, placeholder: "e.g., The Hobbit", class: "form-input mt-1" %>
   </div>
 
   <div>
-    <%= f.label :notes %>
-    <%= f.text_area :notes %>
+    <%= f.label :notes, "Notes / Context", class: "block text-sm font-semibold text-slate-700 mb-1" %>
+    <%= f.text_area :notes, rows: 3, placeholder: "Any details about the loan...", class: "form-input mt-1" %>
   </div>
 
-  <%= f.submit %>
+  <div class="pt-6 border-t border-slate-100 flex items-center justify-end gap-3">
+    <%= link_to "Cancel", loans_path, class: "btn-secondary" %>
+    <%= f.submit "Record Loan", class: "btn-primary shadow-indigo-100" %>
+  </div>
 <% end %>

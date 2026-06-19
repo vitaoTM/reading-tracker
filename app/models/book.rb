@@ -21,4 +21,12 @@ class Book < ApplicationRecord
   def tag_names
     tags.pluck(:name)
   end
+
+  def tag_list
+    tags.pluck(:name).join(", ")
+  end
+
+  def tag_list=(value)
+    self.tag_names = value.to_s.split(",").map(&:strip)
+  end
 end

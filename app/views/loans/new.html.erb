@@ -1,4 +1,10 @@
-<h1>Record a Loan</h1>
+<div class="max-w-xl mx-auto py-6">
+  <div class="mb-8 text-center">
+    <h1 class="h1">Record a Book Loan</h1>
+    <p class="mt-2 text-slate-600">Enter loan details to track lending or borrowing activity.</p>
+  </div>
 
-<%= render "form", loan: @loan %>
-<%= link_to "Back to Loans", loans_path %>
+  <div class="card p-6 sm:p-8">
+    <%= render "form", loan: @loan %>
+  </div>
+</div>

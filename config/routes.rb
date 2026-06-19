@@ -2,7 +2,9 @@ Rails.application.routes.draw do
   resource :session
   resources :passwords, param: :token
   resource :registration, only: [ :new, :create ]
-  resources :books
+  resources :books do
+    resources :ratings, only: [ :create, :destroy ]
+  end
 
   resources :reading_entries, only: [ :create, :update, :destroy ]
   get "library", to: "reading_entries#index"
