@@ -17,6 +17,7 @@ Rails.application.routes.draw do
   resources :favorite_books, only: [ :create, :destroy ] do
     collection { patch :reorder }
   end
+  get "favorites", to: "favorite_books#index"
   resources :loans
-  root "sessions#new"
+  root "books#index"
 end

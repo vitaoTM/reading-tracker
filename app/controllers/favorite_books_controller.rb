@@ -1,6 +1,10 @@
 class FavoriteBooksController < ApplicationController
   before_action :require_authentication
 
+  def index
+    @favorites = Current.user.favorite_books.includes(:book)
+  end
+
   def create
     @favorite = Current.user.favorite_books.new(favorite_params)
     if @favorite.save
