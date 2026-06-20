@@ -3,6 +3,8 @@ class Book < ApplicationRecord
 
   has_one_attached :cover_image
 
+  normalizes :isbn, with: ->(v) { v.blank? ? nil : v.strip }
+
   validates :title, presence: true
   validates :isbn, uniqueness: true, allow_blank: true
   validates :age_indicator, inclusion: { in: AGE_INDICATOR }, allow_nil: true

@@ -18,4 +18,14 @@ class BookTest < ActiveSupport::TestCase
     book = create(:book)
     assert_equal 0, book.recommendation_count
   end
+
+    test "blank isbn is stored as nil" do
+    book = create(:book, isbn: "")
+    assert_nil book.reload.isbn
+  end
+
+  test "two books without isbn can coexist" do
+    create(:book, isbn: "")
+    assert_nothing_raised { create(:book, isbn: "") }
+  end
 end
