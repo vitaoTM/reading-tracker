@@ -14,10 +14,19 @@ Rails.application.routes.draw do
 
   get "habits", to: "reading_sessions#index"
   resources :reading_sessions, only: [ :create, :destroy ]
+
   resources :favorite_books, only: [ :create, :destroy ] do
     collection { patch :reorder }
   end
   get "favorites", to: "favorite_books#index"
+
+  resources :recommendation_lists do
+    resources :recommendation_list_items, only: [ :create, :update, :destroy ]
+  end
+  get "lists", to: "recommendation_lists#discover"
+  get "top_recommended", to: "books#top_recommended"
+
   resources :loans
+
   root "books#index"
 end

@@ -13,6 +13,7 @@ class Book < ApplicationRecord
   has_many :tags, through: :book_tags
   has_many :reading_entries, dependent: :destroy
   has_many :ratings, dependent: :destroy
+  has_many :recommendation_list_items, dependent: :destroy
 
   def tag_names=(names)
     self.tags = Array(names).reject(&:blank?).map do |name|

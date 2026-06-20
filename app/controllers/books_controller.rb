@@ -59,6 +59,12 @@ class BooksController < ApplicationController
     end
   end
 
+  def top_recommended
+    @books = Book.where("recommendation_count > 0")
+                 .order(recommendation_count: :desc, cached_average_rating: :desc)
+                 .limit(50)
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_book
