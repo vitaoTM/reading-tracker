@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_06_18_161905) do
+ActiveRecord::Schema[8.1].define(version: 2026_06_19_171130) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -27,6 +27,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_18_161905) do
   create_table "books", force: :cascade do |t|
     t.string "age_indicator"
     t.string "author"
+    t.decimal "cached_average_rating", default: "0.0", null: false
     t.string "country_of_origin"
     t.datetime "created_at", null: false
     t.text "description"
@@ -34,10 +35,49 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_18_161905) do
     t.string "language"
     t.integer "page_count"
     t.integer "published_year"
+    t.integer "ratings_count", default: 0, null: false
     t.integer "recommendation_count", default: 0, null: false
     t.string "title"
     t.datetime "updated_at", null: false
     t.index ["isbn"], name: "index_books_on_isbn", unique: true
+  end
+
+  create_table "favorite_books", force: :cascade do |t|
+    t.bigint "book_id", null: false
+    t.datetime "created_at", null: false
+    t.integer "position"
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["book_id", "user_id"], name: "index_favorite_books_on_book_id_and_user_id", unique: true
+    t.index ["book_id"], name: "index_favorite_books_on_book_id"
+    t.index ["user_id"], name: "index_favorite_books_on_user_id"
+  end
+
+  create_table "loans", force: :cascade do |t|
+    t.bigint "book_id"
+    t.string "book_title"
+    t.string "counterparty_name"
+    t.datetime "created_at", null: false
+    t.integer "direction"
+    t.date "loaned_on"
+    t.text "notes"
+    t.date "returned_on"
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["book_id"], name: "index_loans_on_book_id"
+    t.index ["user_id"], name: "index_loans_on_user_id"
+  end
+
+  create_table "ratings", force: :cascade do |t|
+    t.bigint "book_id", null: false
+    t.datetime "created_at", null: false
+    t.text "review"
+    t.integer "score", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["book_id"], name: "index_ratings_on_book_id"
+    t.index ["user_id", "book_id"], name: "index_ratings_on_user_id_and_book_id", unique: true
+    t.index ["user_id"], name: "index_ratings_on_user_id"
   end
 
   create_table "reading_entries", force: :cascade do |t|
@@ -54,6 +94,19 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_18_161905) do
     t.index ["book_id"], name: "index_reading_entries_on_book_id"
     t.index ["user_id", "book_id"], name: "index_reading_entries_on_user_id_and_book_id", unique: true
     t.index ["user_id"], name: "index_reading_entries_on_user_id"
+  end
+
+  create_table "reading_sessions", force: :cascade do |t|
+    t.bigint "book_id"
+    t.datetime "created_at", null: false
+    t.integer "duration_minutes"
+    t.text "notes"
+    t.integer "pages_read"
+    t.date "read_on"
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["book_id"], name: "index_reading_sessions_on_book_id"
+    t.index ["user_id"], name: "index_reading_sessions_on_user_id"
   end
 
   create_table "sessions", force: :cascade do |t|
@@ -85,7 +138,15 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_18_161905) do
 
   add_foreign_key "book_tags", "books"
   add_foreign_key "book_tags", "tags"
+  add_foreign_key "favorite_books", "books"
+  add_foreign_key "favorite_books", "users"
+  add_foreign_key "loans", "books"
+  add_foreign_key "loans", "users"
+  add_foreign_key "ratings", "books"
+  add_foreign_key "ratings", "users"
   add_foreign_key "reading_entries", "books"
   add_foreign_key "reading_entries", "users"
+  add_foreign_key "reading_sessions", "books"
+  add_foreign_key "reading_sessions", "users"
   add_foreign_key "sessions", "users"
 end

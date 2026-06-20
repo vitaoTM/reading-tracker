@@ -1,0 +1,24 @@
+<h1 class="text-2xl font-bold mb-6">My Favorites</h1>
+
+<ul data-controller="sortable"
+    data-sortable-url-value="<%= reorder_favorite_books_path %>"
+    class="space-y-2">
+  <% @favorites.each do |fav| %>
+    <li data-id="<%= fav.id %>"
+        draggable="true"
+        data-action="dragstart->sortable#dragstart
+                     dragend->sortable#dragend
+                     dragover->sortable#dragover
+                     drop->sortable#drop"
+        class="flex items-cente gap-3 p-3 bg-white border rounded cursor-grab">
+        <span class="text-gray-400 font-mono w-6"><%= fav.position %>.</span>
+        <span class="flex-1 font-medium"><%= fav.book.title %></span>
+        <span class="text-gray-500 text-sm"><%= fav.book.author %></span>
+        <%= button_to "×", 
+            favorite_book_path(fav), 
+            method: :delete,
+            class: "text-red-400 hover:text-red-600 font-bold px-2" %>
+    </li>
+  <% end %>
+
+</ul>

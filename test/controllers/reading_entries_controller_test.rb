@@ -27,4 +27,16 @@ class ReadingEntriesControllerTest < ActionDispatch::IntegrationTest
     }
     assert_equal "finished", entry.reload.status
   end
+
+  test "want_to_read page lists only want_to_read entries" do
+    reading_book = create(:book)
+    to_read_book = create(:book)
+    create(:reading_entry, user: @user, book: reading_book, status: :reading)
+    create(:reading_entry, user: @user, book: to_read_book, status: :want_to_read)
+
+    get want_to_read_url
+    assert_response :success
+    assert_match to_read_book.title, response.body
+    refute_match reading_book.title, response.body
+  end
 end

@@ -68,6 +68,11 @@
       <%= form.label :country_of_origin, class: "block text-sm font-medium leading-6 text-gray-900" %>
       <%= form.text_field :country_of_origin, class: "form-input mt-2" %>
     </div>
+
+    <div class="sm:col-span-3">
+      <%= form.label :tag_list, "Tags (comma-separated)", class: "block text-sm font-medium leading-6 text-gray-900" %>
+      <%= form.text_field :tag_list, placeholder: "fiction, classic, history", class: "form-input mt-2" %>
+    </div>
   </div>
 
   <div class="pt-6 flex items-center justify-end gap-x-3">

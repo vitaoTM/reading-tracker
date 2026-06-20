@@ -9,6 +9,7 @@ class BooksController < ApplicationController
   # GET /books/1 or /books/1.json
   def show
     @reading_entry = Current.user&.reading_entries&.find_by(book: @book)
+    @user_rating = Current.user&.ratings&.find_by(book: @book) || Current.user&.ratings&.build(book: @book)
   end
 
   # GET /books/new
@@ -66,6 +67,6 @@ class BooksController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def book_params
-      params.expect(book: [ :title, :author, :isbn, :description, :published_year, :country_of_origin, :language, :page_count, :age_indicator ])
+      params.expect(book: [ :title, :author, :isbn, :description, :published_year, :country_of_origin, :language, :page_count, :age_indicator, :tag_list ])
     end
 end
