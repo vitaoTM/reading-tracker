@@ -1,0 +1,39 @@
+<h1 class="text-2xl font-bold mb-2">My Reading Map</h1>
+<p class="text-gray-500 text-sm mb-6"><%= Current.user.map_entries.count %> countries marked</p>
+<div>
+
+<div data-controller="world-map"
+      data-world-map-filled-value="<%= @filled.to_json %>"
+      data-world-map-save-url-value="<%= map_entries_path %>"
+      class="mb-10">
+  <%= File.read(Rails.root.join("app/assets/images/world_map.svg"))
+          .gsub("<svg ", '<svg width="200%" height="auto" ')
+          .html_safe %>
+</div>
+
+<div id="map-panel" class="hidden mt-6 p-4 border rounded-lg bg-gray-50">
+  <h3 class="font-semibold mb-3" id="map-panel-title">Country</h3>
+  <div class="flex gap-2 items-center">
+    <label class="text-sm">Color:</label>
+    <input type="color" id="map-color-picker" value="#4f86c6" class="w-10 h-8 border rounded">
+    <button id="map-save-btn" class="bg-blue-600 text-white px-3 py-1 rounded text-sm">Save</button>
+    <button id="map-clear-btn" class="text-red-500 text-sm px-2">Clear</button>
+  </div>
+</div>
+
+<div class="mt-6">
+  <h2 class="font-semibold mb-3">Marked countries</h2>
+  <% if @entries.any? %>
+    <div class="flex flex-wrap gap-2">
+      <% @entries.each do |entry| %>
+        <span class="px-3 py-1 rounded-full text-sm font-medium text-white"
+              style="background-color: <%= entry.color || '#4f86c6' %>">
+          <%= entry.country_code %>
+        </span>
+      <% end %>
+    </div>
+  <% else %>
+    <p class="text-gray-400 text-sm">Click any country on the map to mark it.</p>
+  <% end %>
+</div>
+</div>

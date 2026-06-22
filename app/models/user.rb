@@ -9,6 +9,7 @@ class User < ApplicationRecord
   has_many :favorite_books, dependent: :destroy
   has_many :favorited, through: :favorite_books, source: :book
   has_many :recommendation_lists, dependent: :destroy
+  has_many :map_entries, dependent: :destroy
 
   normalizes :email_address, with: ->(e) { e.strip.downcase }
 
@@ -54,5 +55,9 @@ class User < ApplicationRecord
       end
     end
     streak
+  end
+
+  def map_data
+    map_entries.pluck(:country_code, :color).to_h
   end
 end

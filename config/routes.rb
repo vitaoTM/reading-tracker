@@ -26,6 +26,10 @@ Rails.application.routes.draw do
   get "lists", to: "recommendation_lists#discover"
   get "top_recommended", to: "books#top_recommended"
 
+  resources :map_entries, only: [ :create ]
+  delete "map_entries", to: "map_entries#destroy"
+  get "map", to: "map_entries#index"
+
   resources :loans
 
   root "books#index"

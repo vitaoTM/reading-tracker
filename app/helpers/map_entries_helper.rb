@@ -1,0 +1,2 @@
+module MapEntriesHelper
+end
