@@ -1,39 +1,47 @@
-<h1 class="text-2xl font-bold mb-2">My Reading Map</h1>
-<p class="text-gray-500 text-sm mb-6"><%= Current.user.map_entries.count %> countries marked</p>
-<div>
+  <div class="w-full max-w-7xl mx-auto">
+    <div class="mb-8">
+      <h1 class="h1">My Reading Map</h1>
+      <p class="mt-2 text-lg text-slate-600"><%= Current.user.map_entries.count %> <%= "country".pluralize(Current.user.map_entries.count) %> marked</p>
+    </div>
 
-<div data-controller="world-map"
-      data-world-map-filled-value="<%= @filled.to_json %>"
-      data-world-map-save-url-value="<%= map_entries_path %>"
-      class="mb-10">
-  <%= File.read(Rails.root.join("app/assets/images/world_map.svg"))
-          .gsub("<svg ", '<svg width="200%" height="auto" ')
-          .html_safe %>
-</div>
-
-<div id="map-panel" class="hidden mt-6 p-4 border rounded-lg bg-gray-50">
-  <h3 class="font-semibold mb-3" id="map-panel-title">Country</h3>
-  <div class="flex gap-2 items-center">
-    <label class="text-sm">Color:</label>
-    <input type="color" id="map-color-picker" value="#4f86c6" class="w-10 h-8 border rounded">
-    <button id="map-save-btn" class="bg-blue-600 text-white px-3 py-1 rounded text-sm">Save</button>
-    <button id="map-clear-btn" class="text-red-500 text-sm px-2">Clear</button>
+    <div class="card p-6 mb-8 overflow-hidden">
+  <div data-controller="world-map"
+        data-world-map-filled-value="<%= @filled.to_json %>"
+        data-world-map-save-url-value="<%= map_entries_path %>"
+        class="overflow-x-auto select-none bg-slate-50/50 rounded-xl border border-slate-100/50 p-4">
+    <%= inline_world_map_svg %>
   </div>
-</div>
+  <div id="map-panel" class="hidden mt-6 p-4 border border-slate-200 rounded-xl bg-slate-50 flex items-center justify-between gap-4">
+    <div class="flex items-center gap-3">
+      <h3 class="font-bold text-slate-800 text-sm" id="map-panel-title">Country</h3>
+      <input type="color"
+             id="map-color-picker"
+             value="#4f86c6"
+             autocomplete="off"
+             class="w-8 h-8 border border-slate-200 rounded-md cursor-pointer">
+    </div>
+    <div class="flex gap-2">
+      <button id="map-save-btn"
+              class="btn-primary py-1.5 px-4 text-xs cursor-pointer">Save Color</button>
+      <button id="map-clear-btn"
+              class="btn-danger py-1.5 px-4 text-xs text-white hover:bg-red-50 hover:text-red-600 border-red-200 cursor-pointer">Clear</button>
+    </div>
+  </div>
+    <div class="mt-8">
+      <h2 class="font-semibold text-slate-800 mb-4 text-sm">Marked Countries</h2>
+      <% if @entries.any? %>
+        <div class="flex flex-wrap gap-2">
+          <% @entries.each do |entry| %>
+            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold text-white shadow-sm"
+                  style="background-color: <%= entry.color || '#4f86c6' %>">
+              📍 <%= entry.country_code %>
 
-<div class="mt-6">
-  <h2 class="font-semibold mb-3">Marked countries</h2>
-  <% if @entries.any? %>
-    <div class="flex flex-wrap gap-2">
-      <% @entries.each do |entry| %>
-        <span class="px-3 py-1 rounded-full text-sm font-medium text-white"
-              style="background-color: <%= entry.color || '#4f86c6' %>">
-          <%= entry.country_code %>
-        </span>
+            </span>
+          <% end %>
+        </div>
+      <% else %>
+        <p class="text-slate-400 text-sm italic">Click any country on the map to start tracking.</p>
       <% end %>
     </div>
-  <% else %>
-    <p class="text-gray-400 text-sm">Click any country on the map to mark it.</p>
-  <% end %>
-</div>
-</div>
+  </div> <!-- End of Card -->
+</div> <!-- End of Container -->
