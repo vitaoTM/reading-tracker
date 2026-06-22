@@ -10,7 +10,12 @@ class FavoriteBook < ApplicationRecord
 
   default_scope { order(:position) }
 
+  before_validation :set_next_positon, on: :create
   private
+
+  def set_next_positon
+    self.position ||= (user.favorite_books.maximum(:position) || 0) + 1
+  end
 
   def shelf_not_full
     if user && user.favorite_books.count >= MAX_FAVORITES

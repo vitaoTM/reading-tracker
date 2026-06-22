@@ -1,3 +1,26 @@
+<% if authenticated? %>
+  <div class="cart p-6 mt-6 flex items-center justify-between">
+    <div>
+      <h3 class="text-base font-semibold leading-6 text-gray-900">Favorite Status</h3>
+      <p class="text-sm text-gray-600 mt-1">Manage whether this books is in your top favorites shelf.</p>
+    </div>
+
+    <% if fav = Current.user.favorite_books.find_by(book: @book) %>
+      <%= button_to favorite_book_path(fav), 
+                    method: :delete, 
+                    class: "btn-secondary text-amber-500 flex items-center gap-1.5 cursor-poiter" do %>
+        <span>★</span> Favorited
+      <% end %>
+    <% else %>
+      <%= button_to favorite_books_path(favorite_book: {book_id: @book.id }),
+                    method: :post, 
+                    class: "btn-secondary text-gray-500 hover:text-amber-500 flex items-center gap-1.5 cursor-poiter" do %>
+        <span>☆</span> Add to Favorites
+      <% end %>
+    <% end %>
+  </div>
+<% end %>
+
 <div class="mt-6">
   <div class="card p-6">
     <h3 class="text-base font-semibold leading-6 text-gray-900">My Library Status</h3>

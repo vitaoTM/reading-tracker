@@ -27,4 +27,21 @@ class FavoriteBookTest < ActiveSupport::TestCase
     create(:favorite_book, user: user, book: create(:book), position: 2)
     assert_equal [ 1, 2, 3 ], user.favorite_books.pluck(:position)
   end
+
+  test "automatically assigns position 1 for first favorite" do
+    user = create(:user)
+    book = create(:book)
+    favorite = user.favorite_books.create!(book: book)
+    assert_equal 1, favorite.position
+  end
+
+  test "automatically assigns next sequential position" do
+    user = create(:user)
+    create(:favorite_book, user: user, position: 1)
+    create(:favorite_book, user: user, position: 2)
+
+    new_book = create(:book)
+    new_fav = user.favorite_books.create!(book: new_book)
+    assert_equal 3, new_fav.position
+  end
 end

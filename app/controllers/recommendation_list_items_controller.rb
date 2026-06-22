@@ -29,7 +29,7 @@ class RecommendationListItemsController < ApplicationController
   end
 
   def item_params
-    params.require(:recommendation_list_items).permit(
+    params.require(:recommendation_list_item).permit(
       :book_id, :position, :note
     )
   end
