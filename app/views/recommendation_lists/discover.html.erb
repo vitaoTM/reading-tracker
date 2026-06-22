@@ -1,0 +1,8 @@
+<h1>Discover Lists</h1>
+
+<% @lists.each do |list| %>
+  <div class="">
+    <h2><%= link_to list.title, list %></h2>
+    <p>by <%= list.user.username %>. <%= list.items.size %> books</p>
+  </div>
+<% end %>

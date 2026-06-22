@@ -1,24 +1,38 @@
-<h1 class="text-2xl font-bold mb-6">My Favorites</h1>
+<div class="w-full">
+  <div class="mb-8">
+    <h1 class="h1">My Favorites</h1>
+  </div>
 
-<ul data-controller="sortable"
-    data-sortable-url-value="<%= reorder_favorite_books_path %>"
-    class="space-y-2">
-  <% @favorites.each do |fav| %>
-    <li data-id="<%= fav.id %>"
-        draggable="true"
-        data-action="dragstart->sortable#dragstart
-                     dragend->sortable#dragend
-                     dragover->sortable#dragover
-                     drop->sortable#drop"
-        class="flex items-cente gap-3 p-3 bg-white border rounded cursor-grab">
-        <span class="text-gray-400 font-mono w-6"><%= fav.position %>.</span>
-        <span class="flex-1 font-medium"><%= fav.book.title %></span>
-        <span class="text-gray-500 text-sm"><%= fav.book.author %></span>
-        <%= button_to "×", 
-            favorite_book_path(fav), 
-            method: :delete,
-            class: "text-red-400 hover:text-red-600 font-bold px-2" %>
-    </li>
+  <% if @favorites.any? %>
+    <ul data-controller="sortable"
+        data-sortable-url-value="<%= reorder_favorite_books_path %>"
+        class="space-y-3">
+      <% @favorites.each do |fav| %>
+        <li data-id="<%= fav.id %>"
+            draggable="true"
+            data-action="dragstart->sortable#dragstart
+                          dragend->sortable#dragend
+                          dragover->sortable#dragover
+                          drop->sortable#drop"
+            class="flex items-center gap-4 p-4 bg-white border border-slate-200 rounded-xl shadow-sm hover:shadow transition
+cursor-grab">
+            <span class="text-slate-400 font-mono w-6 position-badge"><%= fav.position %>.</span>
+            <%= link_to fav.book.title, 
+                        book_path(fav.book), 
+                        draggable: "false", 
+                        class: "flex-1 font-semibold text-slate-800 
+                        hover:text-indigo-600 hover:underline transition" %>
+            <span class="text-slate-500 text-sm"><%= fav.book.author %></span>
+            <%= button_to "×",
+                favorite_book_path(fav),
+                method: :delete,
+                class: "text-red-400 hover:text-red-600 font-bold px-2 cursor-pointer" %>
+        </li>
+      <% end %>
+    </ul>
+  <% else %>
+    <div class="text-center card py-12">
+      <p class="text-sm text-gray-500">You don't have any favorite books yet.</p>
+    </div>
   <% end %>
-
-</ul>
+</div>

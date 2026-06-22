@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_06_19_171130) do
+ActiveRecord::Schema[8.1].define(version: 2026_06_20_201418) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -109,6 +109,28 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_19_171130) do
     t.index ["user_id"], name: "index_reading_sessions_on_user_id"
   end
 
+  create_table "recommendation_list_items", force: :cascade do |t|
+    t.bigint "book_id", null: false
+    t.datetime "created_at", null: false
+    t.text "note"
+    t.integer "position"
+    t.bigint "recommendation_list_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["book_id"], name: "index_recommendation_list_items_on_book_id"
+    t.index ["recommendation_list_id", "book_id"], name: "idx_on_recommendation_list_id_book_id_5d3e2487d8", unique: true
+    t.index ["recommendation_list_id"], name: "index_recommendation_list_items_on_recommendation_list_id"
+  end
+
+  create_table "recommendation_lists", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.text "description"
+    t.boolean "public", default: false, null: false
+    t.string "title"
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["user_id"], name: "index_recommendation_lists_on_user_id"
+  end
+
   create_table "sessions", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "ip_address"
@@ -148,5 +170,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_19_171130) do
   add_foreign_key "reading_entries", "users"
   add_foreign_key "reading_sessions", "books"
   add_foreign_key "reading_sessions", "users"
+  add_foreign_key "recommendation_list_items", "books"
+  add_foreign_key "recommendation_list_items", "recommendation_lists"
+  add_foreign_key "recommendation_lists", "users"
   add_foreign_key "sessions", "users"
 end

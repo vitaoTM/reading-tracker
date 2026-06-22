@@ -29,6 +29,6 @@ class FavoriteBooksController < ApplicationController
   private
 
   def favorite_params
-    params.require(:favorite_book).permit(:book_id, :position)
+    params.require(:favorite_book).permit(:book_id)
   end
 end
