@@ -26,4 +26,12 @@ class MapEntriesControllerTest < ActionDispatch::IntegrationTest
     end
     assert_equal "#ffffff", MapEntry.find_by(user: @user, country_code: "BR").color
   end
+
+  test "destroy clears a marked country" do
+    entry = create(:map_entry, user: @user, country_code: "JP")
+    assert_difference("MapEntry.count", -1) do
+      delete map_entries_url, params: { country_code: entry.country_code }
+    end
+    assert_response :success
+  end
 end

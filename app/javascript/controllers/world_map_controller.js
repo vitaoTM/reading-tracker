@@ -41,13 +41,18 @@ import { Controller } from "@hotwired/stimulus"
       this.filledValue = { ...this.filledValue, [code]: color }
       document.getElementById("map-panel").classList.add("hidden")
 
+      const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content
+      const headers = { "Content-Type": "application/json" }
+      if (csrfToken) headers["X-CSRF-Token"] = csrfToken
+
       fetch(this.saveUrlValue, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]').content
-        },
+        headers: headers,
         body: JSON.stringify({ country_code: code, color })
+      }).then(response => {
+        if (response.ok) {
+          window.location.reload()
+        }
       })
     }
 
@@ -58,8 +63,17 @@ import { Controller } from "@hotwired/stimulus"
       this.filledValue = updated
       document.getElementById("map-panel").classList.add("hidden")
 
-      fetch(`${this.saveUrlValue}?country_code=${code}`, { method: "DELETE",
-        headers: { "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]').content }
+      const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content
+      const headers = {}
+      if (csrfToken) headers["X-CSRF-Token"] = csrfToken
+
+      fetch(`${this.saveUrlValue}?country_code=${code}`, { 
+        method: "DELETE",
+        headers: headers
+      }).then(response => {
+        if (response.ok) {
+          window.location.reload()
+        }
       })
     }
 
