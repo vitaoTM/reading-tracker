@@ -23,6 +23,24 @@ class BooksControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "index filters by search query" do
+    create(:book, title: "Dune", author: "Herbert")
+    create(:book, title: "Foundation", author: "Asimov")
+    get books_url, params: { q: "Dune" }
+    assert_response :success
+    assert_match "Dune", response.body
+    refute_match "Foundation", response.body
+  end
+
+  test "index shows all books when no query" do
+    create(:book, title: "Dune")
+    create(:book, title: "Foundation")
+    get books_url
+    assert_response :success
+    assert_match "Dune", response.body
+    assert_match "Foundation", response.body
+  end
+
   # test "should get new" do
   #   get new_book_url
   #   assert_response :success

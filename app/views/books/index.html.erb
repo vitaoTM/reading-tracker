@@ -1,9 +1,29 @@
 <% content_for :title, "Books" %>
 
-<div class="w-full">
-  <div class="flex justify-between items-center mb-8">
+<div>
+  <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
     <h1 class="h1">Books</h1>
     <%= link_to "New book", new_book_path, class: "btn-primary" %>
+  </div>
+
+  <div>
+    <%= form_with url: books_path, method: :get, data: { turbo_frame: "books" } do |f| %>
+      <div class="flex gap-2 mb-6">
+        <%= f.search_field :q, value: params[:q],
+          placeholder: "Search by title, author or tag...",
+          class: "border border-slate-200 rounded-lg px-4 py-2 flex-1 
+                  focus:outline-none focus:ring-2 focus:ring-indigo-300",
+          autofocus: params[:q].present? %>
+        <%= f.submit "Search", class: "btn-primary" %>
+        <% if params[:q].present? %>
+          <%= link_to "Clear", books_path, class: "btn-secondary" %>
+        <% end %>
+      </div>
+    <% end %>
+
+    <% if params[:q].present? %>
+      <p class="text-sm text-slate-500 mb-4">Results for "<%= params[:q] %>"</p>
+    <% end %>
   </div>
 
   <div id="books" class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">

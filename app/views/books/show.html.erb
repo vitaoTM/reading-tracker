@@ -9,7 +9,7 @@
         <%= link_to "Back to books", books_path, class: "btn-secondary" %>
       </div>
     </div>
-    
+
     <%# Average rating summary %>
     <div class="flex items-center gap-2 mt-3">
       <% if @book.ratings_count > 0 %>
@@ -101,7 +101,7 @@
       <h3 class="text-sm font-semibold text-slate-800 mb-4">
         <%= @user_rating.new_record? ? "Rate and review this book" : "Update your rating & review" %>
       </h3>
-      
+
       <%= form_with model: [@book, @user_rating], local: true, class: "space-y-4" do |f| %>
         <div>
           <%= f.label :score, "Score", class: "block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-2" %>
@@ -123,7 +123,7 @@
 
         <div class="flex justify-between items-center pt-2">
           <% unless @user_rating.new_record? %>
-            <%= link_to "Remove Rating", book_rating_path(@book, @user_rating), data: { turbo_method: :delete, turbo_confirm: "Delete your rating?" }, class: "text-xs font-semibold text-red-600 hover:underline" %>
+            <%= link_to "Remove Rating", book_rating_path(@book, @user_rating), data: { turbo_method: :delete, turbo_confirm: "Delete your rating?" }, class: "btn-danger" %>
           <% else %>
             <div></div>
           <% end %>

@@ -1,5 +1,14 @@
 class Book < ApplicationRecord
+  include PgSearch::Model
+
   AGE_INDICATOR = %w[children middle_grade young_adult adult all_ages].freeze
+
+  pg_search_scope :search,
+    against: [ :title, :author, :description ],
+    associated_against: { tags: [ :name ] },
+    using: { tsearch: { prefix: true, dictionary: "english" } }
+
+  # TODO: add more languages to search
 
   has_one_attached :cover_image
 
