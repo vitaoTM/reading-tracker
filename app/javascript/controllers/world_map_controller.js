@@ -10,6 +10,7 @@ import { Controller } from "@hotwired/stimulus"
         path.style.cursor = "pointer"
         path.addEventListener("click", this.handleClick.bind(this))
       })
+      this.element.setAttribute("data-world-map-connected", "true")
     }
 
     applyFill() {

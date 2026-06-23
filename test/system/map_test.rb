@@ -11,6 +11,7 @@ class MapTest < ApplicationSystemTestCase
     assert_text "My Reading Map"
 
     # Verify SVG map is loaded
+    assert_selector "[data-world-map-connected='true']"
     assert_selector "svg"
     #
     # # Click on a country (e.g. Brazil - BR)
