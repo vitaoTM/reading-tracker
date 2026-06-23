@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_06_20_201418) do
+ActiveRecord::Schema[8.1].define(version: 2026_06_22_022356) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -66,6 +66,18 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_20_201418) do
     t.bigint "user_id", null: false
     t.index ["book_id"], name: "index_loans_on_book_id"
     t.index ["user_id"], name: "index_loans_on_user_id"
+  end
+
+  create_table "map_entries", force: :cascade do |t|
+    t.bigint "book_id"
+    t.string "color"
+    t.string "country_code"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["book_id"], name: "index_map_entries_on_book_id"
+    t.index ["user_id", "country_code"], name: "index_map_entries_on_user_id_and_country_code", unique: true
+    t.index ["user_id"], name: "index_map_entries_on_user_id"
   end
 
   create_table "ratings", force: :cascade do |t|
@@ -164,6 +176,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_20_201418) do
   add_foreign_key "favorite_books", "users"
   add_foreign_key "loans", "books"
   add_foreign_key "loans", "users"
+  add_foreign_key "map_entries", "books"
+  add_foreign_key "map_entries", "users"
   add_foreign_key "ratings", "books"
   add_foreign_key "ratings", "users"
   add_foreign_key "reading_entries", "books"
