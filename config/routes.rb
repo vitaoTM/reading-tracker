@@ -32,5 +32,7 @@ Rails.application.routes.draw do
 
   resources :loans
 
+  get ":username", to: "profiles#show", as: :profile,
+    constraints: { username: (/[a-z0-9_]+/i) }
   root "books#index"
 end
