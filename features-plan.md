@@ -36,7 +36,7 @@ Each step takes < 1 minute. Check off as you go.
 
 **Root cause:** The importer imports every `li[data-itemid]` element regardless of type. Books have a `"by Author"` line; tools/appliances don't.
 
-- [ ] **Step 1** — Open `app/services/amazon_wishlist_importer.rb` at **line 25**.
+- [x] **Step 1** — Open `app/services/amazon_wishlist_importer.rb` at **line 25**.
 
   Find this block (lines 25–33):
   ```ruby
@@ -65,8 +65,9 @@ Each step takes < 1 minute. Check off as you go.
           image_url: img_node&.[]("src")
         )
   ```
+  > **Why:** We extract `author_text` first, then gate on `next unless` it starts with `"by "` + at least one non-space character. This skips any list item (tools, appliances, etc.) that has no book-style author line. We use `sub` instead of `gsub` because we only need to remove the `"by "` prefix once — `gsub` would replace every occurrence of the pattern in the string, which could corrupt author names that contain the word "by".
 
-- [ ] **Step 2** — Open `test/services/amazon_wishlist_importer_test.rb` at **line 43**.
+- [x] **Step 2** — Open `test/services/amazon_wishlist_importer_test.rb` at **line 43**.
 
   Inside `amazon_wishlist_html_fixture`, after the second `</li>` (line 51) and before `</ul>`, add a third item with no "by" author:
   ```html
@@ -77,7 +78,7 @@ Each step takes < 1 minute. Check off as you go.
             </li>
   ```
 
-- [ ] **Step 3** — Still in `test/services/amazon_wishlist_importer_test.rb`, after the `test "skips books user already has"` block (after line 33), add a new test:
+- [x] **Step 3** — Still in `test/services/amazon_wishlist_importer_test.rb`, after the `test "skips books user already has"` block (after line 33), add a new test:
   ```ruby
     test "skips non-book items without a 'by Author' line" do
       count = AmazonWishlistImporter.new(@url).import_for(@user)
@@ -86,13 +87,13 @@ Each step takes < 1 minute. Check off as you go.
     end
   ```
 
-- [ ] **Step 4** — Run the service tests:
+- [x] **Step 4** — Run the service tests:
   ```
   bin/rails test test/services/amazon_wishlist_importer_test.rb
   ```
   All tests should pass.
 
-- [ ] **Step 5** — Commit:
+- [x] **Step 5** — Commit:
   ```
   git add app/services/amazon_wishlist_importer.rb test/services/amazon_wishlist_importer_test.rb
   git commit -m "fix(import): filter non-book items from Amazon wishlist by author presence"
@@ -102,7 +103,7 @@ Each step takes < 1 minute. Check off as you go.
 
 ## Track 1 · Test Review: Add Missing Model Tests
 
-- [ ] **Step 1** — Open `test/models/book_test.rb`. After the last `test "..." do` block, add:
+- [x] **Step 1** — Open `test/models/book_test.rb`. After the last `test "..." do` block, add:
   ```ruby
     test "country_of_origin is optional" do
       book = build(:book, country_of_origin: nil)
@@ -115,12 +116,12 @@ Each step takes < 1 minute. Check off as you go.
     end
   ```
 
-- [ ] **Step 2** — Run book model tests:
+- [x] **Step 2** — Run book model tests:
   ```
   bin/rails test test/models/book_test.rb
   ```
 
-- [ ] **Step 3** — Commit:
+- [x] **Step 3** — Commit:
   ```
   git add test/models/book_test.rb
   git commit -m "feat(tests): add missing country_of_origin coverage to BookTest"
@@ -132,12 +133,12 @@ Each step takes < 1 minute. Check off as you go.
 
 ### Migration
 
-- [ ] **Step 1** — In terminal:
+- [x] **Step 1** — In terminal:
   ```
   bin/rails g migration AddAutoFilledToMapEntries auto_filled:boolean
   ```
 
-- [ ] **Step 2** — Open the generated file at `db/migrate/*_add_auto_filled_to_map_entries.rb`.
+- [x] **Step 2** — Open the generated file at `db/migrate/*_add_auto_filled_to_map_entries.rb`.
 
   The generator creates:
   ```ruby
@@ -147,24 +148,26 @@ Each step takes < 1 minute. Check off as you go.
   ```ruby
   add_column :map_entries, :auto_filled, :boolean, default: false, null: false
   ```
+  > **Why:** Without `default: false`, existing rows would get `NULL` for `auto_filled`. PostgreSQL treats `NULL` and `false` differently in boolean checks — `auto_filled?` on a nil value returns `nil` (falsy but not `false`), which could cause subtle bugs. `null: false` enforces the constraint at the DB level so we never have to guard against nil in application code.
 
-- [ ] **Step 3** — In terminal:
+- [x] **Step 3** — In terminal:
   ```
   bin/rails db:migrate
   ```
 
 ### MapEntry model — add color constants
 
-- [ ] **Step 4** — Open `app/models/map_entry.rb` at **line 2** (after `COUNTRY_CODE_REGEX`). Insert these three lines immediately after line 2:
+- [x] **Step 4** — Open `app/models/map_entry.rb` at **line 2** (after `COUNTRY_CODE_REGEX`). Insert these three lines immediately after line 2:
   ```ruby
     READING_COLOR  = "#f59e0b"
     FINISHED_COLOR = "#10b981"
     STATUS_COLORS  = { "reading" => READING_COLOR, "finished" => FINISHED_COLOR }.freeze
   ```
+  > **Why:** Constants live in `MapEntry` because they describe the model's own data (what colors its entries can auto-have). The service and tests can then reference `MapEntry::READING_COLOR` instead of hardcoding hex strings in multiple places — change the color in one spot and everything updates. `freeze` prevents accidental mutation of the hash at runtime.
 
 ### Service
 
-- [ ] **Step 5** — Create new file `app/services/map_entry_auto_filler.rb` with this exact content:
+- [x] **Step 5** — Create new file `app/services/map_entry_auto_filler.rb` with this exact content:
   ```ruby
   class MapEntryAutoFiller
     def self.call(reading_entry) = new(reading_entry).call
@@ -193,6 +196,7 @@ Each step takes < 1 minute. Check off as you go.
     end
   end
   ```
+  > **Why two branches:** The `new_record?` branch handles the first time a country gets auto-filled. The `elsif` branch handles status progression (reading → finished) for the *same* book — we only update if `book_id` matches so we don't accidentally change a color that was auto-filled by a *different* book from the same country. Anything else (manual entry with `auto_filled: false`, or a different book's auto-fill) falls through silently — we never touch it.
 
 ### ReadingEntry callback
 
@@ -207,6 +211,7 @@ Each step takes < 1 minute. Check off as you go.
       MapEntryAutoFiller.call(self)
     end
   ```
+  > **Why `after_save` and not `after_create`:** We need this to fire on both create (user marks a book for the first time) and update (user changes status from reading to finished). `after_save` covers both. We keep the callback method small and delegate to the service so the model stays thin and the logic is testable in isolation.
 
 ### Controller — mark manual saves
 
@@ -220,6 +225,7 @@ Each step takes < 1 minute. Check off as you go.
   ```ruby
       entry.assign_attributes(color: params[:color], book_id: params[:book_id].presence, auto_filled: false)
   ```
+  > **Why force `auto_filled: false` here:** When the user manually picks a color on the map, we stamp the entry as non-auto-filled. This is what prevents the `after_save` callback in `ReadingEntry` from ever overwriting a color the user consciously chose. Without this, the callback's `elsif auto_filled?` guard would never trigger — but it's still the right thing to be explicit about intent at the write site.
 
 ### Tests
 

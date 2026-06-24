@@ -11,4 +11,12 @@ class ReadingEntry < ApplicationRecord
 
   validates :book_id, uniqueness: { scope: :user_id }
   validates :status, presence: true
+
+  after_save :sync_map_entry
+
+  private
+
+  def sync_map_entry
+    MapEntryAutoFiller.call(self)
+  end
 end

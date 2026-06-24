@@ -8,7 +8,7 @@ class MapEntriesController < ApplicationController
 
   def create
     entry = Current.user.map_entries.find_or_initialize_by(country_code: params[:country_code])
-    entry.assign_attributes(color: params[:color], book_id: params[:book_id].presence)
+    entry.assign_attributes(color: params[:color], book_id: params[:book_id].presence, auto_filled: false)
     if entry.save
       head :ok
     else
