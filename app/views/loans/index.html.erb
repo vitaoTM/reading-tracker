@@ -4,7 +4,9 @@
       <h1 class="h1">Book Loans</h1>
       <p class="mt-2 text-lg text-slate-600">Keep track of books you've lent to friends or borrowed from others.</p>
     </div>
-    <%= link_to "Record a Loan", new_loan_path, class: "btn-primary shadow-indigo-100 font-semibold" %>
+    <%= turbo_frame_tag "loan_form" do %>
+      <%= link_to "Record a Loan", new_loan_path, class: "btn-primary shadow-indigo-100 font-semibold" %>
+    <% end %>
   </div>
 
   <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">

@@ -4,7 +4,10 @@
       <h1 class="h1">My Lists</h1>
       <p class="mt-2 text-lg text-slate-600">Curate and share your custom reading recommendations.</p>
     </div>
-    <%= link_to "New List", new_recommendation_list_path, class: "btn-primary shadow-indigo-100" %>
+
+    <%= turbo_frame_tag "recommendations_list_form" do %>
+      <%= link_to "New List", new_recommendation_list_path, class: "btn-primary shadow-indigo-100" %>
+    <% end %>
   </div>
 
   <% if @lists.any? %>

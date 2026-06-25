@@ -3,7 +3,9 @@
 <div>
   <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
     <h1 class="h1">Books</h1>
-    <%= link_to "New book", new_book_path, class: "btn-primary" %>
+    <%= turbo_frame_tag "book_form" do %>
+      <%= link_to "New book", new_book_path, class: "btn-primary" %>
+    <% end %>
   </div>
 
   <div>
