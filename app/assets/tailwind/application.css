@@ -1,4 +1,30 @@
 @import "tailwindcss";
+@theme {
+  --animate-appear-then-fade: appear-then-fade 4s forwards;
+
+  @keyframes appear-then-fade {
+    0% {
+      opacity: 0;
+      transform: translateY(-1rem);
+    }
+    5%, 85% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(-1rem);
+      visibility: hidden;
+      pointer-events: none;
+      height: 0;
+      padding-top: 0;
+      padding-bottom: 0;
+      margin-top: 0;
+      margin-bottom: 0;
+      border: none;
+    }
+  }
+}
 
 @layer components {
   .btn-primary {

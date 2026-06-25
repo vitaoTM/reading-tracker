@@ -1,0 +1,14 @@
+<%= turbo_stream.remove dom_id(@item) %>
+<% if @list.items.empty? %>
+  <%= turbo_stream.update "recommendation_list_items" do %>
+    <div class="text-center py-8 text-slate-400 text-sm italic" id="empty_list_state">
+      This list is empty. Choose a book below to populate it
+    </div>
+  <% end %>
+<% end %>
+
+<%= turbo_stream.replace "add_book_form_container", 
+                         partial: "recommendation_list_items/add_book_form",
+                         locals: { list: @list } %>
+
+<%= turbo_stream.prepend "flash", partial: "shared/flash" %>

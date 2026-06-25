@@ -20,7 +20,7 @@
   </div>
 
   <div class="pt-6 border-t border-slate-100 flex items-center justify-end gap-x-3">
-    <%= link_to "Cancel", recommendation_lists_path, class: "btn-secondary" %>
+    <%= link_to "Cancel", (list.persisted? ? list:  recommendation_lists_path), class: "btn-secondary" %>
     <%= f.submit class: "btn-primary cursor-pointer" %>
   </div>
 <% end %>

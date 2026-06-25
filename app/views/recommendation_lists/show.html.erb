@@ -21,42 +21,18 @@
   <div class="card p-6 mb-8">
     <h2 class="text-base font-bold text-slate-900 mb-4">Books on this List</h2>
 
-    <% if @list.items.any? %>
-      <div class="divide-y divide-slate-100">
-        <% @list.items.each do |item| %>
-          <div class="flex items-center justify-between py-4 first:pt-0 last:pb-0">
-            <div class="min-w-0 flex-1 pr-4">
-              <span class="font-mono text-xs text-slate-400 w-5 inline-block"><%= item.position %>.</span>
-              <span class="text-sm font-semibold text-slate-900 hover:text-indigo-600">
-                <%= link_to item.book.title, book_path(item.book) %>
-              </span>
-              <span class="text-xs text-slate-500 block ml-5">by <%= item.book.author %></span>
-            </div>
-            <%= button_to "Remove", recommendation_list_recommendation_list_item_path(@list, item),
-                          method: :delete,
-                          class: "text-xs font-semibold text-slate-400 hover:text-red-600 hover:bg-red-50 px-2.5 py-1 rounded-lg border border-transparent transition cursor-pointer" %>
-          </div>
-        <% end %>
-      </div>
-    <% else %>
-      <div class="text-center py-8 text-slate-400 text-sm italic">
-        This list is empty. Choose a book below to populate it.
-      </div>
-    <% end %>
-  </div>
-
-  <% if @list.items.size < RecommendationList::MAX_ITEMS %>
-    <div class="card p-6 bg-slate-50 border-slate-100/80 mb-8">
-      <h3 class="font-bold text-slate-900 mb-3 text-sm">Add a Book</h3>
-      <%= form_with url: recommendation_list_recommendation_list_items_path(@list), scope: :recommendation_list_item, class: "flex flex-col sm:flex-row gap-3" do |f| %>
-        <%= f.collection_select :book_id, Book.order(:title), :id, :title, 
-              { include_blank: "— Choose a book —" }, 
-              { class: "form-input flex-1" } %>
-        <%= f.hidden_field :position, value: @list.items.size + 1 %>
-        <%= f.submit "Add to List", class: "btn-primary whitespace-nowrap cursor-pointer" %>
+    <div id="recommendation_list_items" class="divide-y divide-slate-100">
+      <% if @list.items.any? %>
+        <%= render @list.items %>
+      <% else %>
+        <div id="empty_list_state" class="text-center py-8 text-slate-400 text-sm italic">
+          This list is empty. Choose a book below to populate it.
+        </div>
       <% end %>
     </div>
-  <% end %>
+  </div>
+
+  <%= render "recommendation_list_items/add_book_form", list: @list %>
 
   <div class="flex items-center gap-4">
     <%= button_to "Delete List", recommendation_list_path(@list), method: :delete,

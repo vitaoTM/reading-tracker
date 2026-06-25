@@ -5,9 +5,15 @@ class RecommendationListItemsController < ApplicationController
   def create
     @item = @list.items.new(item_params)
     if @item.save
-      redirect_back fallback_location: @list, notice: "Book added"
+      respond_to do |format|
+        format.html   { redirect_back fallback_location: @list, notice: "Book added" }
+        format.turbo_stream { flash.now[:notice] = "Book added successfully!" }
+      end
     else
-      redirect_back fallback_location: @list, alert: @item.errors.full_messages.to_sentence
+      respond_to do |format|
+        format.html { redirect_back fallback_location: @list, alert: @item.errors.full_messages.to_sentence }
+        format.turbo_stream { flash.now[:alert] = @item.errors.full_messages.to_sentence }
+      end
     end
   end
 
@@ -18,8 +24,12 @@ class RecommendationListItemsController < ApplicationController
   end
 
   def destroy
-    @list.items.find(params[:id]).destroy
-    redirect_back fallback_location: @list
+    @list.items.find(params[:id])
+    @list.destroy
+    respond_to do |format|
+      format.html { redirect_back fallback_location: @list }
+      format.turbo_streams { flash.now[:notice] = "Book removed successfully!" }
+    end
   end
 
   private

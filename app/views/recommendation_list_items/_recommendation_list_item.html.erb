@@ -1,0 +1,20 @@
+<div id="<%= dom_id recommendation_list_item %>"
+     class="flex items-center justify-between py-4 first:pt-0 last:pb-0">
+  <div class="min-w-0 flex-1 pr-4">
+    <span class="font-mono text-xs text-slate-400 w-5 inline-block"><%= recommendation_list_item.position %>.</span>
+    <span class="text-sm font-semibold text-slate-900 hover:text-indigo-600">
+      <%= link_to recommendation_list_item.book.title, book_path(recommendation_list_item.book) %>
+    </span>
+    <span class="text-xs text-slate-500 block ml-5">by <%= recommendation_list_item.book.author %></span>
+  </div>
+  <%= button_to "Remove",
+                recommendation_list_recommendation_list_item_path(recommendation_list_item
+                .recommendation_list,
+                recommendation_list_item),
+                method: :delete,
+                class: "text-xs font-semibold
+                        text-slate-400 hover:text-red-600
+                        hover:bg-red-50 px-2.5 py-1 
+                        rounded-lg border border-transparent
+                        transition cursor-pointer" %>
+</div>
