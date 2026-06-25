@@ -1,7 +1,8 @@
 import { Controller } from "@hotwired/stimulus"
 
   export default class extends Controller {
-    static values = { filled: Object, saveUrl: String, counts: Object }
+    static targets = ["container"]
+    static values = { filled: Object, saveUrl: String, counts: Object, zoom: { type: Number, default: 1} }
 
     connect() {
       this.selectedCode = null
@@ -84,5 +85,27 @@ import { Controller } from "@hotwired/stimulus"
 
     findPath(code) {
       return this.element.querySelector(`path[id="${code}"], path[data-country="${code}"]`)
+    }
+
+    zoomIn()  { this.zoomValue = Math.min(this.zoomValue * 1.5, 6) }
+    zoomOut() { this.zoomValue = Math.max(this.zoomValue / 1.5, 1) }
+    zoomReset() { this.zoomValue = 1 }
+
+    zoomValueChanged() {
+      const svg = this.element.querySelector("svg")
+      if (!svg) return
+      if (this.zoomValue === 1) {
+        svg.style.width = ""
+        this.containerTarget.style.height = ""
+        this.containerTarget.style.overflowY = ""
+        this.naturalContainerHeight = null
+      } else {
+        if (!this.naturalContainerHeight) {
+          this.naturalContainerHeight = this.containerTarget.offsetHeight
+        }
+        this.containerTarget.style.height = `${this.naturalContainerHeight}px`
+        this.containerTarget.style.overflowY = "auto"
+        svg.style.width = `${this.containerTarget.offsetWidth * this.zoomValue}px`
+      }
     }
   }

@@ -4,13 +4,23 @@
     <p class="mt-2 text-lg text-slate-600"><%= Current.user.map_entries.count %> <%= "country".pluralize(Current.user.map_entries.count) %> marked</p>
   </div>
 
-  <div class="card p-6 mb-8 overflow-hidden">
-    <div data-controller="world-map"
+  <div class="card p-6 mb-8 overflow-hidden"
+          data-controller="world-map"
           data-world-map-filled-value="<%= @filled.to_json %>"
           data-world-map-save-url-value="<%= map_entries_path %>"
-          data-world-map-counts-value="<%= @books_per_country.to_json %>"
-          class="overflow-x-auto select-none bg-slate-50/50 rounded-xl border border-slate-100/50 p-4">
+          data-world-map-counts-value="<%= @books_per_country.to_json %>">
+    <div data-world-map-target="container"
+         class="overflow-x-auto
+                select-none
+                bg-slate-50/50
+                rounded-xl border
+                border-slate-100/50 p-4">
       <%= inline_world_map_svg %>
+    </div>
+    <div class="flex items-center gap-2 mb-3">
+      <button data-action="world-map#zoomIn"    class="btn-secondary py-1 px-3 text-sm font-bold">+</button>
+      <button data-action="world-map#zoomOut"   class="btn-secondary py-1 px-3 text-sm font-bold">−</button>
+      <button data-action="world-map#zoomReset" class="btn-secondary py-1 px-3 text-xs">Reset</button>
     </div>
     <div id="map-panel" class="hidden mt-6 p-4 border border-slate-200 rounded-xl bg-slate-50 flex items-center justify-between gap-4">
       <div class="flex items-center gap-3">
