@@ -4,6 +4,7 @@ class MapEntriesController < ApplicationController
   def index
     @entries = Current.user.map_entries.includes(:book)
     @filled  = Current.user.map_data
+    @books_per_country = Current.user.books_per_country
   end
 
   def create

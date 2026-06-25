@@ -124,6 +124,9 @@
               <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold text-white shadow-sm"
                     style="background-color: <%= color || '#4f86c6' %>">
                 📍 <%= code %>
+                <% if @books_per_country[code].to_i > 0 %>
+                  <span class="opacity-75 text-[10px] font-normal"><%= @books_per_country[code] %></span>
+                <% end %>
               </span>
             <% end %>
           </div>

@@ -8,12 +8,14 @@
     <div data-controller="world-map"
           data-world-map-filled-value="<%= @filled.to_json %>"
           data-world-map-save-url-value="<%= map_entries_path %>"
+          data-world-map-counts-value="<%= @books_per_country.to_json %>"
           class="overflow-x-auto select-none bg-slate-50/50 rounded-xl border border-slate-100/50 p-4">
       <%= inline_world_map_svg %>
     </div>
     <div id="map-panel" class="hidden mt-6 p-4 border border-slate-200 rounded-xl bg-slate-50 flex items-center justify-between gap-4">
       <div class="flex items-center gap-3">
         <h3 class="font-bold text-slate-800 text-sm" id="map-panel-title">Country</h3>
+        <p class="text-xs text-slate-500" id="map-panel-count"></p>
         <input type="color"
               id="map-color-picker"
               value="#4f86c6"
@@ -37,6 +39,9 @@
                   style="background-color: <%= entry.color || '#4f86c6' %>">
                   <%# 📍 %>
                   <%= entry.country_code %>
+                  <% if @books_per_country[entry.country_code].to_i > 0 %>
+                    <span class="opacity-75 text-[10px] font-normal"><%= @books_per_country[entry.country_code] %></span>
+                  <% end %>
 
             </span>
           <% end %>

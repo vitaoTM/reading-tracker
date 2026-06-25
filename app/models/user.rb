@@ -60,4 +60,14 @@ class User < ApplicationRecord
   def map_data
     map_entries.pluck(:country_code, :color).to_h
   end
+
+  def books_per_country
+    reading_entries
+      .where(status: [ :reading, :finished ])
+      .joins(:book)
+      .where.not(books: { country_of_origin: [ nil, "" ] })
+      .pluck("UPPER(books.country_of_origin)")
+      .tally
+      .select { |code, _| code.match?(/\A[A-Z]{2}\z/) }
+  end
 end

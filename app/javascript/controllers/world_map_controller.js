@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 
   export default class extends Controller {
-    static values = { filled: Object, saveUrl: String }
+    static values = { filled: Object, saveUrl: String, counts: Object }
 
     connect() {
       this.selectedCode = null
@@ -31,6 +31,10 @@ import { Controller } from "@hotwired/stimulus"
 
       const existing = this.filledValue[code]
       if (existing) document.getElementById("map-color-picker").value = existing
+
+      const count = this.countsValue[code]
+      const countEl = document.getElementById("map-panel-count")
+      if (countEl) countEl.textContent = count ? `${count} book${count !== 1 ? "s" : ""} from here` : ""
 
       document.getElementById("map-save-btn").onclick = () => this.save(code, path)
       document.getElementById("map-clear-btn").onclick = () => this.clear(code, path)
