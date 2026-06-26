@@ -1,0 +1,25 @@
+<%= turbo_stream.remove dom_id(@loan) %>
+
+<% if @loan.lent? %>
+  <%= turbo_stream.update "lent_count_badge" do %>
+    <%= @lent_count %> Active
+  <% end %>
+  <% if @lent_count == 0 %>
+    <%= turbo_stream.replace "lent_loans_container", partial: "loans/lent_empty_state" %>
+  <% end %>
+<% else %>
+  <%= turbo_stream.update "borrowed_count_badge" do %>
+    <%= @borrowed_count %> Active
+  <% end %>
+  <% if @borrowed_count == 0 %>
+    <%= turbo_stream.replace "borrowed_loans_container", partial: "loans/borrowed_empty_state" %>
+  <% end %>
+<% end %>
+
+<% if @history_was_empty %>
+  <%= turbo_stream.replace "history_content", partial: "loans/history_table", locals: { history: [@loan] } %>
+<% else %>
+  <%= turbo_stream.prepend "loans_history", partial: "loans/history_row", locals: { loan: @loan } %>
+<% end %>
+
+<%= turbo_stream.prepend "flash", partial: "shared/flash" %>

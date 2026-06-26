@@ -1,0 +1,40 @@
+<tr id="<%= dom_id(loan) %>"
+    class="hover:bg-slate-50/50 transition">
+  <td class="py-4 text-sm font-semibold text-slate-900"><%= loan.display_title %></td>
+  <td class="py-4 text-sm">
+    <% if loan.lent? %>
+      <span class="inline-flex items-center rounded-md
+                  bg-indigo050 px-2 py-1 text-xs font-medium
+                  text-indigo-700 ring-1 ring-insert
+                  ring-indigo-700/10">Lent</span>
+    <% else %>
+      <span class="inline-flex items-center rounded-md bg-emerald-50
+                  px-2 py-1 text-xs font-medium text-emerald-700
+                  ring-1 ring-insert ring-emerald-700/10">Borrowed</span>
+    <% end %>
+  </td>
+  <td class="py-4 text-sm text-slate-600 font-medium"><%= loan.counterparty_name %></td>
+  <td class="py-4 text-xs text-slate-500">
+    <p>OUt: <%= loan.loaned_on.strftime("%b %d, %Y") %></p>
+    <p class="mt-1 text-slate-400">In: <%= loan.returned_on&.strftime("%b %d, %Y") %></p>
+  </td>
+  <td class="py-4 text-right text-sm">
+    <%= button_to loan_path(loan),
+                  method: :delete,
+                  class: "text-slate-400 hover:text-red-500
+                         p-1.5 rounded-md inline-block
+                         transition cursor-poiter",
+                  data: { turbo_confirm: "delete this history record?" } do %>
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M19 7l-.867 12.142A2 2 0
+                0116.138 21H7.862a2 2 0
+                01-1.995-1.858L5 7m5
+                4v6m4-6v6m1-10V4a1 1 0
+                00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+      </svg>
+    <% end %>
+  </td>
+</tr>

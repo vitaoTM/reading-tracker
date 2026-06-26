@@ -1,0 +1,33 @@
+<% if @loan.lent? %>
+  <% if @was_empty %>
+    <%= turbo_stream.replace "lent_loans_container" do %>
+      <div id="lent_loans_list" class="space-y-4 flex-1">
+        <%= render partial: "loans/loan", locals: { loan: @loan } %>
+      </div>
+    <% end %>
+  <% else %>
+    <%= turbo_stream.prepend "lent_loans_list", partial: "loans/loan", locals: { loan: @loan } %>
+  <% end %>
+  <%= turbo_stream.update "lent_count_badge" do %>
+    <%= @lent_count %> Active
+  <% end %>
+<% else %>
+  <% if @was_empty %>
+    <%= turbo_stream.replace "borrowed_loans_container" do %>
+      <div id="borrowed_loans_list" class="space-y-4 flex-1">
+        <%= render partial: "loans/loan", locals: { loan: @loan } %>
+      </div>
+    <% end %>
+  <% else %>
+    <%= turbo_stream.prepend "borrowed_loans_list", partial: "loans/loan", locals: { loan: @loan } %>
+  <% end %>
+  <%= turbo_stream.update "borrowed_count_badge" do %>
+    <%= @borrowed_count %> Active
+  <% end %>
+<% end %>
+
+<%= turbo_stream.replace "loan_form" do %>
+  <%= link_to "Record a Loan", new_loan_path, class: "btn-primary shadow-indigo-100 font-semibold" %>
+<% end %>
+
+<%= turbo_stream.prepend "flash", partial: "shared/flash" %>

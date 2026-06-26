@@ -1,7 +1,7 @@
 <% content_for :title, @book.title %>
 
-<div class="w-full max-w-3xl">
-  <%= turbo_frame_tag dom_id(@book) do %>
+<%= turbo_frame_tag dom_id(@book) do %>
+  <div class="w-full max-w-3xl">
     <div class="mb-8">
       <div class="flex items-center justify-between flex-wrap gap-4">
         <h1 class="h1"><%= @book.title %></h1>
@@ -36,62 +36,64 @@
         </div>
       <% end %>
     </div>
-  <% end %>
 
-  <div class="card">
-    <div class="grid grid-cols-1 gap-x-8 gap-y-10 border-b border-gray-900/10 pb-12 md:grid-cols-3">
-      <div>
-        <h2 class="text-base font-semibold leading-7 text-gray-900">Book Details</h2>
-        <p class="mt-1 text-sm leading-6 text-gray-600">Basic information about the book.</p>
-      </div>
 
-      <div class="md:col-span-2">
-        <dl class="grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-2">
-          <div class="border-t border-gray-100 pt-4">
-            <dt class="text-sm font-medium leading-6 text-gray-900">Author</dt>
-            <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0"><%= @book.author %></dd>
-          </div>
-          <div class="border-t border-gray-100 pt-4">
-            <dt class="text-sm font-medium leading-6 text-gray-900">ISBN</dt>
-            <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0"><%= @book.isbn.presence || "N/A" %></dd>
-          </div>
-          <div class="border-t border-gray-100 pt-4">
-            <dt class="text-sm font-medium leading-6 text-gray-900">Published Year</dt>
-            <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0"><%= @book.published_year %></dd>
-          </div>
-          <div class="border-t border-gray-100 pt-4">
-            <dt class="text-sm font-medium leading-6 text-gray-900">Age Indicator</dt>
-            <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0"><%= @book.age_indicator&.titleize || "All Ages" %></dd>
-          </div>
-          <div class="border-t border-gray-100 pt-4">
-            <dt class="text-sm font-medium leading-6 text-gray-900">Language</dt>
-            <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0"><%= @book.language %></dd>
-          </div>
-          <div class="border-t border-gray-100 pt-4">
-            <dt class="text-sm font-medium leading-6 text-gray-900">Page Count</dt>
-            <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0"><%= @book.page_count %></dd>
-          </div>
-          <div class="border-t border-gray-100 pt-4 sm:col-span-2">
-            <dt class="text-sm font-medium leading-6 text-gray-900">Country of Origin</dt>
-            <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0"><%= @book.country_of_origin %></dd>
-          </div>
-        </dl>
-      </div>
-    </div>
+    <div class="card">
+      <div class="grid grid-cols-1 gap-x-8 gap-y-10 border-b border-gray-900/10 pb-12 md:grid-cols-3">
+        <div>
+          <h2 class="text-base font-semibold leading-7 text-gray-900">Book Details</h2>
+          <p class="mt-1 text-sm leading-6 text-gray-600">Basic information about the book.</p>
+        </div>
 
-    <% if @book.description.present? %>
-      <div class="mt-10">
-        <h2 class="text-base font-semibold leading-7 text-gray-900">Description</h2>
-        <div class="mt-4 text-sm leading-6 text-gray-700 prose prose-slate max-w-none">
-          <%= simple_format @book.description %>
+        <div class="md:col-span-2">
+          <dl class="grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-2">
+            <div class="border-t border-gray-100 pt-4">
+              <dt class="text-sm font-medium leading-6 text-gray-900">Author</dt>
+              <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0"><%= @book.author %></dd>
+            </div>
+            <div class="border-t border-gray-100 pt-4">
+              <dt class="text-sm font-medium leading-6 text-gray-900">ISBN</dt>
+              <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0"><%= @book.isbn.presence || "N/A" %></dd>
+            </div>
+            <div class="border-t border-gray-100 pt-4">
+              <dt class="text-sm font-medium leading-6 text-gray-900">Published Year</dt>
+              <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0"><%= @book.published_year %></dd>
+            </div>
+            <div class="border-t border-gray-100 pt-4">
+              <dt class="text-sm font-medium leading-6 text-gray-900">Age Indicator</dt>
+              <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0"><%= @book.age_indicator&.titleize || "All Ages" %></dd>
+            </div>
+            <div class="border-t border-gray-100 pt-4">
+              <dt class="text-sm font-medium leading-6 text-gray-900">Language</dt>
+              <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0"><%= @book.language %></dd>
+            </div>
+            <div class="border-t border-gray-100 pt-4">
+              <dt class="text-sm font-medium leading-6 text-gray-900">Page Count</dt>
+              <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0"><%= @book.page_count %></dd>
+            </div>
+            <div class="border-t border-gray-100 pt-4 sm:col-span-2">
+              <dt class="text-sm font-medium leading-6 text-gray-900">Country of Origin</dt>
+              <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0"><%= @book.country_of_origin %></dd>
+            </div>
+          </dl>
         </div>
       </div>
-    <% end %>
 
-    <div class="mt-10 pt-6 border-t border-gray-900/10 flex justify-end">
-      <%= button_to "Destroy this book", @book, method: :delete, class: "btn-danger", data: { turbo_confirm: "Are you sure?" } %>
+      <% if @book.description.present? %>
+        <div class="mt-10">
+          <h2 class="text-base font-semibold leading-7 text-gray-900">Description</h2>
+          <div class="mt-4 text-sm leading-6 text-gray-700 prose prose-slate max-w-none">
+            <%= simple_format @book.description %>
+          </div>
+        </div>
+      <% end %>
+
+      <div class="mt-10 pt-6 border-t border-gray-900/10 flex justify-end">
+        <%= button_to "Destroy this book", @book, method: :delete, class: "btn-danger", data: { turbo_confirm: "Are you sure?" } %>
+      </div>
     </div>
-  </div>
+  <% end %>
+
   <%= render "reading_status" %>
 
   <%# Ratings and Reviews Section %>

@@ -77,7 +77,7 @@
   </div>
 
   <div class="pt-6 flex items-center justify-end gap-x-3">
-    <%= link_to "Cancel", books_path, class: "btn-secondary" %>
+    <%= link_to "Cancel", (book.persisted? ? book : books_path), class: "btn-secondary" %>
     <%= form.submit class: "btn-primary" %>
   </div>
 <% end %>

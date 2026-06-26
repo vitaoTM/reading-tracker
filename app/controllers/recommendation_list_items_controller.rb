@@ -24,11 +24,11 @@ class RecommendationListItemsController < ApplicationController
   end
 
   def destroy
-    @list.items.find(params[:id])
-    @list.destroy
+    @item = @list.items.find(params[:id])
+    @item.destroy
     respond_to do |format|
       format.html { redirect_back fallback_location: @list }
-      format.turbo_streams { flash.now[:notice] = "Book removed successfully!" }
+      format.turbo_stream { flash.now[:notice] = "Book removed successfully!" }
     end
   end
 
