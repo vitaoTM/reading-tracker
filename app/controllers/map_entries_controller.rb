@@ -4,11 +4,12 @@ class MapEntriesController < ApplicationController
   def index
     @entries = Current.user.map_entries.includes(:book)
     @filled  = Current.user.map_data
+    @books_per_country = Current.user.books_per_country
   end
 
   def create
     entry = Current.user.map_entries.find_or_initialize_by(country_code: params[:country_code])
-    entry.assign_attributes(color: params[:color], book_id: params[:book_id].presence)
+    entry.assign_attributes(color: params[:color], book_id: params[:book_id].presence, auto_filled: false)
     if entry.save
       head :ok
     else

@@ -1,0 +1,17 @@
+<div id="add_book_form_container">
+  <% if list.items.size < RecommendationList::MAX_ITEMS %>
+    <div class="card p-6 bg-slate-50 border-slate-100/80 mb-8">
+      <h3 class="font-bold text-slate-900 mb-3 text-sm">Add a Book</h3>
+
+      <%= form_with url: recommendation_list_recommendation_list_items_path(list), scope: :recommendation_list_item,
+class: "flex flex-col sm:flex-row gap-3" do |f| %>
+        <%= f.collection_select :book_id, Book.order(:title), :id, :title,
+              { include_blank: "— Choose a book —" },
+              { class: "form-input flex-1" } %>
+
+        <%= f.hidden_field :position, value: list.items.size + 1 %>
+        <%= f.submit "Add to List", class: "btn-primary whitespace-nowrap cursor-pointer" %>
+      <% end %>
+    </div>
+  <% end %>
+</div>

@@ -24,10 +24,12 @@ class AmazonWishlistImporter
 
       author_node = li.at_css("span.a-size-base")
       img_node    = li.at_css("img")
+      author_text = author_node&.text&.strip
+      next unless author_text&.match?(/\Aby\s+\S/i)
 
       items << Item.new(
         title:     title_node.text.strip,
-        author:    author_node&.text&.gsub(/^by\s+/i, "")&.strip,
+        author:    author_text.sub(/^by\s+/i, "").strip,
         asin:      li["data-itemid"],
         image_url: img_node&.[]("src")
       )

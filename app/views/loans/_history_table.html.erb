@@ -1,0 +1,16 @@
+<div class="overflow-x-auto" id="history-container">
+  <table class="min-w-full divide-y divide-slate-200">
+    <thead>
+      <tr>
+        <th class="text-left text-xs font-semibold text-slate-500 uppercase tracking-wider pb-3">Book</th>
+        <th class="text-left text-xs font-semibold text-slate-500 uppercase tracking-wider pb-3">Activity</th>
+        <th class="text-left text-xs font-semibold text-slate-500 uppercase tracking-wider pb-3">Person</th>
+        <th class="text-left text-xs font-semibold text-slate-500 uppercase tracking-wider pb-3">Dates</th>
+        <th class="relative pb-3"></th>
+      </tr>
+    </thead>
+    <tbody id="loans_history" class="divide-y divide-slate-100">
+      <%= render partial: "loans/history_row", collection: history, as: :loan %>
+    </tbody>
+  </table>
+</div>

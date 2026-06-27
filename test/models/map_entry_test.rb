@@ -30,4 +30,9 @@ class MapEntryTest < ActiveSupport::TestCase
     create(:map_entry, user: user, country_code: "JP", color: "#FF0000")
     assert_equal({ "BR" => "#00FF00", "JP" => "#FF0000" }, user.map_data)
   end
+
+  test "auto_filled defaults to false" do
+    entry = create(:map_entry)
+    refute entry.auto_filled?
+  end
 end

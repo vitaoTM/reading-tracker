@@ -28,4 +28,14 @@ class BookTest < ActiveSupport::TestCase
     create(:book, isbn: "")
     assert_nothing_raised { create(:book, isbn: "") }
   end
+
+  test "country_of_origin is optional" do
+    book = build(:book, country_of_origin: nil)
+    assert book.valid?
+  end
+
+  test "country_of_origin is stored as entered" do
+    book = create(:book, country_of_origin: "BR")
+    assert_equal "BR", book.reload.country_of_origin
+  end
 end

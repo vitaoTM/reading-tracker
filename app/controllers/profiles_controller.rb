@@ -2,12 +2,15 @@ class ProfilesController < ApplicationController
   skip_before_action :require_authentication
 
   def show
-    @user             = User.find_by(username: params[:username])
+      @user             = User.find_by(username: params[:username])
     return render file: "public/404.html", status: :not_found unless @user
-    @favorites        = @user.favorite_books.includes(:book)
-    @reading          = @user.currently_reading
-    @public_lists     = @user.recommendation_lists.public_lists.includes(items: :book)
-    @map_data         = @user.map_data
-    @stats            = @user.reading_stats
+    @favorites          = @user.favorite_books.includes(:book)
+    @reading            = @user.currently_reading
+    @public_lists       = @user.recommendation_lists.public_lists.includes(items: :book)
+    @private_lists      = @user.recommendation_lists.private_lists.includes(items: :book)
+    @map_data           = @user.map_data
+    @books_per_country  = @user.books_per_country
+    @stats              = @user.reading_stats
+    @lifetime_minutes   = @user.reading_sessions.sum(:duration_minutes)
   end
 end

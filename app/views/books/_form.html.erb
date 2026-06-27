@@ -67,6 +67,7 @@
     <div class="sm:col-span-3">
       <%= form.label :country_of_origin, class: "block text-sm font-medium leading-6 text-gray-900" %>
       <%= form.text_field :country_of_origin, class: "form-input mt-2" %>
+      <p class="mt-1 text-xs test-slate-400">Use 2-letter ISO code (e.g BR, GB, JP) to enable map auto-fill</p>
     </div>
 
     <div class="sm:col-span-3">
@@ -76,7 +77,7 @@
   </div>
 
   <div class="pt-6 flex items-center justify-end gap-x-3">
-    <%= link_to "Cancel", books_path, class: "btn-secondary" %>
+    <%= link_to "Cancel", (book.persisted? ? book : books_path), class: "btn-secondary" %>
     <%= form.submit class: "btn-primary" %>
   </div>
 <% end %>
