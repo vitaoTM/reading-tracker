@@ -75,6 +75,14 @@
               <dt class="text-sm font-medium leading-6 text-gray-900">Country of Origin</dt>
               <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0"><%= @book.country_of_origin %></dd>
             </div>
+            <% if Current.user %>
+              <div class="border-t border-gray-100 pt-4">
+                <dt class="text-sm font-medium leading-6 text-gray-900">Time Logged</dt>
+                <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                  <%= format_duration(Current.user.reading_sessions.where(book: @book).sum(:duration_minutes)) %>
+                </dd>
+              </div>
+            <% end %>
           </dl>
         </div>
       </div>

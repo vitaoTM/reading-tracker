@@ -1,6 +1,7 @@
 class ReadingEntriesController < ApplicationController
   def index
-    @entries = Current.user.reading_entries.includes(:book).group_by(&:status)
+    @entries   = Current.user.reading_entries.includes(:book).group_by(&:status)
+    @durations = Current.user.reading_sessions.group(:book_id).sum(:duration_minutes)
   end
 
   def create

@@ -1,33 +1,18 @@
 <div class="w-full max-w-5xl mx-auto">
   <div class="mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-    <div>
+    <div class="flex items-center justify-between gap-4 mb-8">
       <h1 class="h1">My Lists</h1>
       <p class="mt-2 text-lg text-slate-600">Curate and share your custom reading recommendations.</p>
     </div>
-
-    <%= turbo_frame_tag "recommendation_list_form" do %>
-      <%= link_to "New List", new_recommendation_list_path, class: "btn-primary shadow-indigo-100" %>
-    <% end %>
+    <%= link_to "New List", new_recommendation_list_path, data: { turbo_frame: "recommendation_list_form"}, class: "btn-primary" %>
   </div>
 
+  <%= turbo_frame_tag "recommendation_list_form", class: "block w-full max-w-3xl mx-auto mb-8" %>
+
   <% if @lists.any? %>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div id="recommendation_lists" class="grid grid-cols-1 md:grid-cols-2 gap-6">
       <% @lists.each do |list| %>
-        <div class="card p-6 flex flex-col justify-between hover:shadow-md transition">
-          <div>
-            <div class="flex items-center justify-between gap-2 mb-2">
-              <%= link_to list.title, list, class: "text-lg font-bold text-slate-900 hover:text-indigo-600 hover:underline transition" %>
-              <span class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold <%= list.public? ? 'bg-emerald-50 text-emerald-700 ring-1 ring-emerald-600/10' : 'bg-slate-100 text-slate-600 ring-1 ring-slate-500/10' %>">
-                <%= list.public? ? "Public" : "Private" %>
-              </span>
-            </div>
-            <p class="text-sm text-slate-500 mb-4 line-clamp-2"><%= list.description.presence || "No description provided." %></p>
-          </div>
-          <div class="pt-4 border-t border-slate-100 flex items-center justify-between text-xs text-slate-400 font-medium">
-            <span>📚 <%= list.items.size %> <%= "book".pluralize(list.items.size) %></span>
-            <%= link_to "View details →", list, class: "text-indigo-600 hover:underline" %>
-          </div>
-        </div>
+        <%= render "list_card", list: list %>
       <% end %>
     </div>
   <% else %>
