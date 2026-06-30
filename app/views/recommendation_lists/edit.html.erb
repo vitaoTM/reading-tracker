@@ -1,4 +1,6 @@
-<div class="w-full max-w-3xl">
-  <h1 class="text-2xl font-bold mb-4">Edit List</h1>
-  <%= render "form", list: @list %>
-</div>
+<%= turbo_frame_tag dom_id(@list) do %>
+  <div class="w-full max-w-3xl mt-4 mb-4">
+    <h1 class="text-2xl font-bold mb-4">Edit List</h1>
+    <%= render "form", list: @list %>
+  </div>
+<% end %>

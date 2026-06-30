@@ -15,10 +15,13 @@ class RecommendationListsController < ApplicationController
 
   def create
     @list = Current.user.recommendation_lists.new(list_params)
-    if @list.save
-      redirect_to @list, notice: "List Created"
-    else
-      render :new, status: :unprocessable_entity
+    respond_to do |format|
+      if @list.save
+        format.html { redirect_to @list, notice: "List Created" }
+        format.turbo_stream
+      else
+        format.html { render :new, status: :unprocessable_entity }
+      end
     end
   end
 
@@ -35,7 +38,10 @@ class RecommendationListsController < ApplicationController
 
   def destroy
     @list.destroy
-    redirect_to recommendation_lists_path
+    respond_to do |format|
+      format.html { redirect_to recommendation_lists_path }
+      format.turbo_stream
+    end
   end
 
   def discover

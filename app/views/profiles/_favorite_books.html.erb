@@ -1,0 +1,18 @@
+<% if @favorites.any? %>
+  <div class="space-y-3">
+    <% @favorites.each do |fav| %>
+      <div class="flex items-center justify-between p-3.5 rounded-xl border border-slate-100 bg-white shadow-sm hover:shadow transition">
+        <div class="flex items-center gap-3 min-w-0">
+          <span class="font-mono text-sm text-slate-400 font-bold"><%= fav.position %></span>
+          <div class="min-w-0">
+            <%= link_to fav.book.title, fav.book, class: "font-semibold text-slate-800 hover:text-indigo-600 hover:underline truncate block" %>
+            <span class="text-xs text-slate-500 block">by <%= fav.book.author %></span>
+          </div>
+        </div>
+        <%= link_to "View", fav.book, class: "text-xs font-semibold text-indigo-600 hover:underline bg-indigo-50/50 hover:bg-indigo-50 px-3 py-1.5 rounded-lg transition" %>
+      </div>
+    <% end %>
+  </div>
+<% else %>
+  <p class="text-slate-400 text-sm italic py-4">No favorite books added yet.</p>
+<% end %>

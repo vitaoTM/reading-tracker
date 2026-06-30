@@ -33,6 +33,12 @@ class AmazonWishlistImporterTest < ActiveSupport::TestCase
     assert_equal 1, ReadingEntry.where(user: @user, book: book).count
   end
 
+  test "skips non-book items without a 'by Author' line" do
+    count = AmazonWishlistImporter.new(@url).import_for(@user)
+    assert_equal 2, count
+    assert_nil Book.find_by(title: "Black & Decker Drill")
+  end
+
   private
 
   def amazon_wishlist_html_fixture
@@ -48,6 +54,11 @@ class AmazonWishlistImporterTest < ActiveSupport::TestCase
             <a id="itemName_ASIN002">Clean Code</a>
             <span class="a-size-base">by Robert Martin</span>
             <img src="https://example.com/cover2.jpg" />
+          </li>
+          <li data-itemid="ASIN003">
+            <a id="itemName_ASIN003">Black &amp; Decker Drill</a>
+            <span class="a-size-base">Electronics</span>
+            <img src="https://example.com/drill.jpg" />
           </li>
         </ul>
       </body></html>

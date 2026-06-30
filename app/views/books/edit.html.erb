@@ -1,9 +1,11 @@
 <% content_for :title, "Editing book" %>
 
-<div class="w-full max-w-3xl">
-  <h1 class="h1 mb-8">Editing book</h1>
+<%= turbo_frame_tag dom_id(@book) do %>
+  <div class="w-full max-w-3xl">
+    <h1 class="h1 mb-8">Editing book</h1>
 
-  <div class="card">
-    <%= render "form", book: @book %>
+    <div class="card">
+      <%= render "form", book: @book %>
+    </div>
   </div>
-</div>
+<% end %>

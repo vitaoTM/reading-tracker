@@ -1,5 +1,9 @@
 class MapEntry < ApplicationRecord
-  COUNTRY_CODE_REGEX = /\A[A-Z]{2}\z/
+  COUNTRY_CODE_REGEX = (/\A[A-Z]{2}\z/)
+  COUNTRY_NAME_REGEX = (/title="[^"]*"/)
+  READING_COLOR      = "#f59e0b"
+  FINISHED_COLOR     = "#10b981"
+  STATUS_COLORS      = { "reading" => READING_COLOR, "finished" => FINISHED_COLOR }.freeze
 
   belongs_to :user
   belongs_to :book, optional: true

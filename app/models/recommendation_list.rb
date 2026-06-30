@@ -10,4 +10,5 @@ class RecommendationList < ApplicationRecord
   validates :title, presence: true, length: { maximum: 80 }
 
   scope :public_lists, -> { where(public: true) }
+  scope :private_lists, -> { where(public: false) }
 end

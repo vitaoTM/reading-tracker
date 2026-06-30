@@ -1,0 +1,5 @@
+<%= turbo_stream.prepend "recommendation_lists", partial: "recommendation_lists/list_card", locals: { list: @list } %>
+
+<%= turbo_stream.replace "recommendation_list_form" do %>
+  <%= turbo_frame_tag "recommendation_list_form" %>
+<% end %>

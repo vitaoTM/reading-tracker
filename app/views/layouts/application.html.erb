@@ -26,8 +26,10 @@
 
   <body class="bg-slate-50 text-slate-900 antialiased font-sans">
     <%= render "shared/navbar" %>
-    <%= render "shared/flash" %>
-    <main class="container mx-auto mt-28 px-5 flex justify-center">
+    <div id="flash" class="fixed top-5 right-5 z-50 flex flex-col gap-3 max-w-sm w-full pointer-events-none">
+      <%= render "shared/flash" %>
+    </div>
+    <main class="container mx-auto mt-20 md:mt-28 px-5 flex justify-center">
       <%= yield %>
     </main>
   </body>
