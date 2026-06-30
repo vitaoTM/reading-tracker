@@ -1,5 +1,5 @@
 class RegistrationsController < ApplicationController
-  allow_unauthenticated_access, only: [ :new, :create ]
+  allow_unauthenticated_access only: [ :new, :create ]
 
   def new
     @user = User.new
@@ -33,6 +33,6 @@ class RegistrationsController < ApplicationController
   private
 
   def registration_params
-    params.require(:user).permit(:email_address, :username, :password, :password_confirmation)
+    params.require(:user).permit(:email_address, :username, :password, :password_confirmation, :bio)
   end
 end

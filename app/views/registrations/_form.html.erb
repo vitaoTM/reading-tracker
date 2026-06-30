@@ -1,0 +1,77 @@
+<%= form_with model: user, url: registration_path do |f| %>
+  <% if user.errors.any? %>
+    <div class="rounded-md bg-red-50 p-4 mb-6">
+      <div class="flex">
+        <div class="flex-shrink-0">
+          <svg class="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8
+                                         8 0 000 16zM8.707
+                                         7.293a1 1 0 00-1.414
+                                         1.414L8.586 10l-1.293 1.293a1
+                                         1 0 101.414 1.414L10
+                                         11.414l1.293 1.293a1
+                                         1 0 001.414-1.414L11.414
+                                         10l1.293-1.293a1 1 0
+                                         00-1.414-1.414L10
+                                         8.586 8.707 7.293z" clip-rule="evenodd" />
+          </svg>
+        </div>
+        <div class="ml-3">
+          <h3 class="text-sm font-medium text-red-800">
+            <%= pluralize(user.errors.count, "error") %> prohibited this account from being saved:
+          </h3>
+          <div class="mt-2 text-sm text-red-700">
+            <ul role="list" class="list-disc space-y-1 pl-5">
+              <% user.errors.full_messages.each do |msg| %>
+                <li><%= msg %></li>
+              <% end %>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <div class="space-y-4">
+    <div>
+      <%= f.label :email_address, class: "block text-sm font-medium leading-6 text-gray-900" %>
+      <%= f.email_field :email_address, required: true, autofocus: !user.persisted?, autocomplete: "email",
+placeholder: "you@example.com", class: "form-input mt-2" %>
+    </div>
+
+    <div>
+      <%= f.label :username, class: "block text-sm font-medium leading-6 text-gray-900" %>
+      <%= f.text_field :username, required: true, autocomplete: "username", placeholder: "johndoe", class: "form-
+input mt-2" %>
+    </div>
+
+    <div>
+      <%= f.label :password, class: "block text-sm font-medium leading-6 text-gray-900" %>
+      <%= f.password_field :password, required: user.new_record?, autocomplete: "new-password", placeholder:
+"••••••••", class: "form-input mt-2" %>
+      <% if user.persisted? %>
+        <p class="mt-1 text-xs text-gray-500">Leave blank if you don't want to change it.</p>
+      <% end %>
+    </div>
+
+    <div>
+      <%= f.label :password_confirmation, class: "block text-sm font-medium leading-6 text-gray-900" %>
+      <%= f.password_field :password_confirmation, required: user.new_record?, autocomplete: "new-password",
+placeholder: "••••••••", class: "form-input mt-2" %>
+    </div>
+
+    <div>
+      <%= f.label :bio, class: "block text-xs font-medium leading-6 text-gray-900" %>
+      <%= f.text_area :bio, class: "form-input mt-2" %>
+    </div>
+
+    <div class="flex items-center gap-3 pt-4">
+      <% if user.persisted? %>
+        <%= link_to "Cancel", profile_path(username: user.username), class: "btn-secondary flex-1 text-center" %>
+      <% else %>
+        <%= link_to "Cancel", new_session_path, class: "btn-secondary flex-1 text-center" %>
+      <% end %>
+      <%= f.submit user.persisted? ? "Save changes" : "Create account", class: "btn-primary flex-1" %>
+    </div>
+  </div>
+<% end %>

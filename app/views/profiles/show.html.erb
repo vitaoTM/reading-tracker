@@ -12,6 +12,11 @@
         <p class="text-slate-400 text-sm italic">No bio provided yet.</p>
       <% end %>
     </div>
+    <div>
+      <% if Current.user == @user %>
+        <%= link_to "Edit profile", edit_registration_path(@user), class: "btn-primary" %>
+      <% end %>
+    </div>
   </div>
 
   <%# Grid Layout %>
