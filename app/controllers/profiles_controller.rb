@@ -1,5 +1,6 @@
 class ProfilesController < ApplicationController
   skip_before_action :require_authentication
+  before_action :resume_session
 
   def show
       @user             = User.find_by(username: params[:username])

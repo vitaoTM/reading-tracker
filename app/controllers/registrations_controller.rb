@@ -1,5 +1,5 @@
 class RegistrationsController < ApplicationController
-  allow_unauthenticated_access
+  allow_unauthenticated_access, only: [ :new, :create ]
 
   def new
     @user = User.new
@@ -12,6 +12,21 @@ class RegistrationsController < ApplicationController
       redirect_to root_path, notice: "Welcome!"
     else
       render :new, status: :unprocessable_entity
+    end
+  end
+
+  def edit
+    @user = Current.user
+  end
+
+  def update
+    @user = Current.user
+    @user.update(registration_params)
+
+    if @user.save
+      redirect_to root_path, notice: "Updated!"
+    else
+      render :edit, status: :unprocessable_entity
     end
   end
 
